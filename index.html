@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omar's Meeting Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#275D43;--gl:#e8f2ed;--gm:#3a7a5a;
+  --br:#E09964;--brl:#faf3ec;
+  --red:#BB2D37;--blk:#353535;--mist:#FAFAF2;
+  --bdr:rgba(39,93,67,0.13);--bdr2:rgba(39,93,67,0.25);
+  --mut:rgba(53,53,53,0.55);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--mist);color:var(--blk);min-height:100vh}
+.app{max-width:820px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+/* header */
+.hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2.25rem;flex-wrap:wrap;gap:10px}
+.hdr-title{font-family:'Instrument Serif',serif;font-size:2rem;font-weight:400;color:var(--blk);line-height:1.15}
+.hdr-sub{font-size:12px;color:var(--mut);margin-top:4px}
+.hdr-r{display:flex;flex-direction:column;align-items:flex-end;gap:7px}
+.date-pill{background:var(--g);color:#fff;font-size:11px;font-weight:500;padding:5px 13px;border-radius:20px;letter-spacing:.04em}
+.btn-sm{background:none;border:1px solid var(--bdr2);color:var(--g);font-family:'DM Sans',sans-serif;font-size:12px;padding:5px 13px;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:background .12s}
+.btn-sm:hover{background:var(--gl)}
+.btn-sm svg{width:12px;height:12px}
+/* auth */
+.auth{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center}
+.auth h2{font-family:'Instrument Serif',serif;font-size:1.75rem;font-weight:400;margin-bottom:.5rem}
+.auth p{font-size:13px;color:var(--mut);max-width:340px;line-height:1.65;margin:0 auto 1.75rem}
+.auth-btn{background:var(--g);color:#fff;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;padding:11px 26px;border-radius:40px;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:background .12s}
+.auth-btn:hover{background:var(--gm)}
+.auth-note{font-size:11px;color:var(--mut);margin-top:10px}
+/* loading */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:45vh;gap:.875rem}
+.spin{width:28px;height:28px;border:2px solid var(--bdr2);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{font-size:13px;color:var(--mut)}
+/* error */
+.err{background:#fff5f5;border:1px solid rgba(187,45,55,.18);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:1rem}
+/* notice */
+.notice{background:var(--gl);border:1px solid rgba(39,93,67,.18);border-radius:8px;padding:10px 14px;font-size:12px;color:#1a4730;margin-bottom:1.25rem;display:flex;align-items:center;gap:7px}
+.notice svg{width:14px;height:14px;flex-shrink:0}
+/* day */
+.day{margin-bottom:2.25rem}
+.day-hdr{display:flex;align-items:center;gap:10px;margin-bottom:.875rem}
+.day-hdr h2{font-family:'Instrument Serif',serif;font-size:1.2rem;font-weight:400;white-space:nowrap}
+.day-line{flex:1;height:.5px;background:var(--bdr2)}
+.day-count{font-size:12px;color:var(--mut);white-space:nowrap}
+/* time slot */
+.slot{margin-bottom:10px}
+.slot-hdr{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.slot-time{font-size:13px;font-weight:500;color:var(--g);min-width:74px}
+.slot-line{flex:1;height:.5px;background:var(--bdr)}
+/* card */
+.card{background:#fff;border:.5px solid var(--bdr);border-radius:0 12px 12px 0;border-left:3px solid var(--g);padding:14px 16px;margin-bottom:7px}
+.card.virtual{border-left-color:var(--br)}
+.card.internal{border-left-color:#bbb}
+.card-top{display:flex;align-items:flex-start;gap:12px}
+.avatar{width:42px;height:42px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;color:var(--g);flex-shrink:0;border:.5px solid var(--bdr);overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.cb{flex:1;min-width:0}
+.c-name{font-size:15px;font-weight:500;color:var(--blk)}
+.c-role{font-size:12px;color:var(--mut);margin-top:2px}
+.c-bio{font-size:13px;color:var(--mut);line-height:1.55;margin-top:5px;font-style:italic}
+.c-event{font-size:12px;color:var(--mut);margin-top:8px;padding-top:8px;border-top:.5px solid var(--bdr)}
+.badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:7px}
+.badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;display:inline-flex;align-items:center;gap:3px}
+.bv{background:var(--brl);color:#7a4d12;border:.5px solid rgba(224,153,100,.3)}
+.bp{background:var(--gl);color:#1a4730;border:.5px solid rgba(39,93,67,.2)}
+.bi{background:#f3f3f2;color:#666;border:.5px solid rgba(0,0,0,.08)}
+.dur{font-size:11px;color:var(--mut)}
+.loc{font-size:12px;color:var(--g);margin-top:4px;display:flex;align-items:center;gap:3px}
+.li-link{font-size:11px;color:var(--g);text-decoration:none;display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border:.5px solid var(--bdr2);border-radius:20px}
+.li-link:hover{background:var(--gl)}
+.email-box{margin-top:10px;padding:10px 12px;background:var(--mist);border-radius:8px;border:.5px solid var(--bdr)}
+.email-lbl{font-size:10px;color:var(--mut);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+.email-txt{font-size:13px;color:var(--blk);line-height:1.55}
+.email-date{font-size:11px;color:var(--mut);margin-top:3px}
+.divider{border:none;border-top:.5px solid var(--bdr);margin:12px 0}
+/* enriching dots */
+.dots{display:inline-flex;gap:3px;align-items:center}
+.dots span{width:4px;height:4px;background:var(--br);border-radius:50%;animation:dp 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes dp{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+.enriching{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--mut)}
+/* empty */
+.empty{padding:1.25rem;text-align:center;color:var(--mut);font-size:13px;font-style:italic;background:#fff;border-radius:12px;border:.5px solid var(--bdr)}
+@media(max-width:600px){.app{padding:1.5rem 1rem 3rem}.hdr{flex-direction:column}.hdr-r{align-items:flex-start;flex-direction:row}}
+</style>
+</head>
+<body>
+<div class="app" id="root"></div>
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+// 1. Replace with your Google OAuth Client ID
+const CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID_HERE';
+// 2. Your Google calendar email address — viewers will see YOUR calendar
+const OWNER_CALENDAR = 'omar@islamicfamily.ca';
+// 3. Your name shown in the header
+const OWNER_NAME = 'Omar Yaqub';
+// ─────────────────────────────────────────────────────────────────────────────
+
+const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
+const IF_DOMAINS = ['islamicfamily.ca','flourishing.systems'];
+const IF_KW = ['islamicfamily','islamic family','flourishing systems'];
+const CACHE_KEY = 'mb_cache_v3';
+const TOK_KEY = 'mb_gtoken_v2';
+
+let S = {
+  token: sessionStorage.getItem(TOK_KEY) || null,
+  viewerEmail: null,
+  events: null,
+  loading: false,
+  error: null,
+  lastLoaded: null,
+  enrichCache: {},
+  enriching: {}
+};
+
+// ── helpers ───────────────────────────────────────────────────────────────────
+function isInternal(a) {
+  if (!a) return false;
+  const e=(a.email||'').toLowerCase(), n=(a.displayName||'').toLowerCase();
+  return IF_DOMAINS.some(d=>e.includes(d)) || IF_KW.some(k=>n.includes(k)||e.includes(k));
+}
+function initials(name) {
+  return (name||'?').split(' ').filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('') || '?';
+}
+function fmtTime(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit',hour12:true});
+}
+function fmtDur(s,e) {
+  if (!s||!e) return '';
+  const m=Math.round((new Date(e)-new Date(s))/60000);
+  if(m<60) return m+'m';
+  const h=Math.floor(m/60),r=m%60;
+  return r?`${h}h ${r}m`:`${h}h`;
+}
+function isVirtual(ev) {
+  const l=(ev.location||'').toLowerCase(), d=(ev.description||'').toLowerCase();
+  return l.includes('zoom')||l.includes('meet')||l.includes('teams')||
+    l.startsWith('https://')||d.includes('zoom')||d.includes('meet.google')||
+    d.includes('teams.microsoft')||d.includes('join the meeting');
+}
+function getLocLabel(ev) {
+  const l=ev.location||'';
+  if(!l||l.toLowerCase().startsWith('http')) return null;
+  return l.length > 60 ? l.slice(0,57)+'…' : l;
+}
+function dayBounds(offset) {
+  const d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+offset);
+  const e=new Date(d); e.setDate(d.getDate()+1);
+  return {start:d,end:e};
+}
+function groupByTime(evs) {
+  const m={};
+  evs.forEach(ev=>{
+    const t=fmtTime(ev.start?.dateTime||ev.start?.date);
+    (m[t]=m[t]||[]).push(ev);
+  });
+  return Object.entries(m).sort((a,b)=>{
+    const fa=evs.find(e=>fmtTime(e.start?.dateTime)===a[0]);
+    const fb=evs.find(e=>fmtTime(e.start?.dateTime)===b[0]);
+    return new Date(fa?.start?.dateTime)-new Date(fb?.start?.dateTime);
+  });
+}
+function nowStr() {
+  return new Date().toLocaleDateString('en-CA',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+}
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Google API ────────────────────────────────────────────────────────────────
+async function fetchEvents(tok) {
+  const {start}=dayBounds(0), {end}=dayBounds(2);
+  // Always fetch OWNER_CALENDAR regardless of who is signed in
+  const calId = encodeURIComponent(OWNER_CALENDAR);
+  const url=`https://www.googleapis.com/calendar/v3/calendars/${calId}/events?timeMin=${start.toISOString()}&timeMax=${end.toISOString()}&singleEvents=true&orderBy=startTime&maxResults=50`;
+  const r=await fetch(url,{headers:{Authorization:`Bearer ${tok}`}});
+  const d=await r.json();
+  if(d.error) throw new Error(d.error.message);
+  return (d.items||[]).filter(e=>e.status!=='cancelled'&&e.start?.dateTime);
+}
+
+async function fetchViewerEmail(tok) {
+  try {
+    const r=await fetch('https://www.googleapis.com/oauth2/v2/userinfo',{headers:{Authorization:`Bearer ${tok}`}});
+    const d=await r.json();
+    return d.email||null;
+  } catch(e){ return null; }
+}
+
+async function fetchEmails(tok, email) {
+  try {
+    const q=encodeURIComponent(`from:${email} OR to:${email}`);
+    const r=await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages?q=${q}&maxResults=3`,{headers:{Authorization:`Bearer ${tok}`}});
+    const d=await r.json();
+    if(!d.messages) return [];
+    return await Promise.all(d.messages.slice(0,3).map(async m=>{
+      const r2=await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${m.id}?format=metadata&metadataHeaders=Subject&metadataHeaders=Date`,{headers:{Authorization:`Bearer ${tok}`}});
+      const d2=await r2.json();
+      const hdrs=d2.payload?.headers||[];
+      return {
+        subject:hdrs.find(h=>h.name==='Subject')?.value||'(no subject)',
+        date:hdrs.find(h=>h.name==='Date')?.value||'',
+        snippet:d2.snippet||''
+      };
+    }));
+  } catch(e){ return []; }
+}
+
+async function enrichContact(name, email, meetingTitle, emails) {
+  const ctx=emails.slice(0,3).map(e=>`Subject: ${e.subject}\nDate: ${e.date}\nSnippet: ${e.snippet}`).join('\n---\n');
+  const prompt=`${OWNER_NAME} (Executive Director, IslamicFamily Edmonton) is meeting: ${name} (${email}) — "${meetingTitle}".\n\nRecent emails:\n${ctx||'None.'}\n\nRespond ONLY valid JSON, no backticks:\n{"title":"job title if inferable, else empty","org":"organization if inferable, else empty","emailSummary":"1-2 sentence email context relevant to this meeting, or empty","emailDate":"most recent email date readable, or empty","bio":"1 sentence who this person is professionally"}`;
+  const resp=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:prompt}]})
+  });
+  const d=await resp.json();
+  const txt=d.content?.[0]?.text||'{}';
+  return JSON.parse(txt.replace(/```json|```/g,'').trim());
+}
+
+// ── render helpers ────────────────────────────────────────────────────────────
+function avatarHtml(name,size=42) {
+  return `<div class="avatar" style="width:${size}px;height:${size}px">${initials(name)}</div>`;
+}
+
+function cardHtml(ev) {
+  const ext=(ev.attendees||[]).filter(a=>!a.self&&!isInternal(a));
+  const intl=(ev.attendees||[]).filter(a=>!a.self&&isInternal(a));
+  const allInt=ext.length===0;
+  const virt=isVirtual(ev);
+  const loc=getLocLabel(ev);
+  const dur=fmtDur(ev.start?.dateTime,ev.end?.dateTime);
+  const modeBadge=virt
+    ? `<span class="badge bv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><path d="M15 10l4.553-2.069A1 1 0 0121 8.869v6.262a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg> Virtual</span>`
+    : `<span class="badge bp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> In person</span>`;
+
+  if(allInt) {
+    const who=intl.length?intl.map(a=>a.displayName||a.email).join(', '):'Internal meeting';
+    return `<div class="card internal">
+      <div class="card-top">
+        ${avatarHtml(ev.summary||'M')}
+        <div class="cb">
+          <div class="c-name">${esc(ev.summary||'Meeting')}</div>
+          <div class="c-role">${esc(who)}</div>
+          <div class="badges">
+            <span class="badge bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg> IslamicFamily</span>
+            ${virt?modeBadge:(loc?modeBadge:'')}
+            ${dur?`<span class="dur">${dur}</span>`:''}
+          </div>
+          ${loc?`<div class="loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${esc(loc)}</div>`:''}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  let inner='';
+  ext.forEach((att,i)=>{
+    const enr=i===0?S.enrichCache[att.email]:null;
+    const isEnr=i===0&&!!S.enriching[att.email];
+    const name=att.displayName||att.email;
+    const role=enr?.title?`${enr.title}${enr.org?` · ${enr.org}`:''}`:null;
+    const liQ=encodeURIComponent(`${name} site:linkedin.com/in`);
+    if(i>0) inner+='<hr class="divider">';
+    inner+=`<div class="card-top">
+      ${avatarHtml(name)}
+      <div class="cb">
+        <div class="c-name">${esc(name)}</div>
+        ${role?`<div class="c-role">${esc(role)}</div>`:''}
+        ${enr?.bio?`<div class="c-bio">${esc(enr.bio)}</div>`:''}
+        <div class="badges">
+          ${modeBadge}
+          ${dur?`<span class="dur">${dur}</span>`:''}
+          <a href="https://www.google.com/search?q=${liQ}" target="_blank" rel="noopener" class="li-link"><svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn</a>
+          ${isEnr?`<span class="enriching"><span class="dots"><span></span><span></span><span></span></span> enriching…</span>`:''}
+        </div>
+        ${loc?`<div class="loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${esc(loc)}</div>`:''}
+        ${enr?.emailSummary?`<div class="email-box"><div class="email-lbl">Recent email context</div><div class="email-txt">${esc(enr.emailSummary)}</div>${enr.emailDate?`<div class="email-date">${esc(enr.emailDate)}</div>`:''}</div>`:''}
+      </div>
+    </div>`;
+  });
+
+  return `<div class="card ${virt?'virtual':'inperson'}">
+    ${inner}
+    ${ev.summary?`<div class="c-event"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11" style="margin-right:3px;vertical-align:-1px"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${esc(ev.summary)}</div>`:''}
+  </div>`;
+}
+
+function dayHtml(label,evs) {
+  const groups=groupByTime(evs);
+  const slots=groups.map(([time,sevs])=>{
+    return `<div class="slot">
+      <div class="slot-hdr"><span class="slot-time">${esc(time)}</span><div class="slot-line"></div></div>
+      ${sevs.map(cardHtml).join('')}
+    </div>`;
+  }).join('');
+  return `<div class="day">
+    <div class="day-hdr">
+      <h2>${label}</h2>
+      <div class="day-line"></div>
+      <div class="day-count">${evs.length} ${evs.length===1?'meeting':'meetings'}</div>
+    </div>
+    ${evs.length===0?'<div class="empty">No meetings scheduled</div>':slots}
+  </div>`;
+}
+
+// ── main render ───────────────────────────────────────────────────────────────
+function render() {
+  const root=document.getElementById('root');
+  const {token,events,loading,error,lastLoaded,viewerEmail}=S;
+  const isOwner=viewerEmail&&viewerEmail.toLowerCase()===OWNER_CALENDAR.toLowerCase();
+
+  if(!token) {
+    root.innerHTML=`<div class="auth">
+      <h2>Omar's meeting brief</h2>
+      <p>Sign in with your Google account. If you've been given access to Omar's calendar, you'll see his meetings for today and tomorrow.</p>
+      <button class="auth-btn" onclick="handleSignIn()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+        Sign in with Google
+      </button>
+      ${CLIENT_ID==='YOUR_GOOGLE_CLIENT_ID_HERE'?'<div class="auth-note">⚠ Client ID not configured yet — add yours to the HTML file</div>':''}
+    </div>`;
+    return;
+  }
+
+  if(loading&&!events) {
+    root.innerHTML=`<div class="loading"><div class="spin"></div><p>Loading Omar's calendar…</p></div>`;
+    return;
+  }
+
+  const todayEvs=(events||[]).filter(e=>{const{start,end}=dayBounds(0);const d=new Date(e.start?.dateTime);return d>=start&&d<end;});
+  const tmrwEvs=(events||[]).filter(e=>{const{start,end}=dayBounds(1);const d=new Date(e.start?.dateTime);return d>=start&&d<end;});
+  const lastStr=lastLoaded?new Date(lastLoaded).toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit',hour12:true}):'';
+
+  const viewerNotice = (!isOwner && viewerEmail)
+    ? `<div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Viewing as <strong>${esc(viewerEmail)}</strong> — showing ${esc(OWNER_NAME)}'s calendar. Email context is pulled from your inbox.</div>`
+    : '';
+
+  root.innerHTML=`
+    <div class="hdr">
+      <div>
+        <div class="hdr-title">Meeting brief</div>
+        <div class="hdr-sub">${OWNER_NAME} · IslamicFamily${lastStr?' · Updated '+lastStr:''}</div>
+      </div>
+      <div class="hdr-r">
+        <span class="date-pill">${nowStr()}</span>
+        <button class="btn-sm" onclick="doLoad(S.token)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Refresh
+        </button>
+      </div>
+    </div>
+    ${error?`<div class="err">⚠ ${esc(error)}</div>`:''}
+    ${viewerNotice}
+    ${dayHtml('Today',todayEvs)}
+    ${dayHtml('Tomorrow',tmrwEvs)}
+  `;
+}
+
+// ── data loading ──────────────────────────────────────────────────────────────
+async function doLoad(tok) {
+  S.loading=true; S.error=null; render();
+  try {
+    const [evs, email] = await Promise.all([fetchEvents(tok), fetchViewerEmail(tok)]);
+    S.events=evs;
+    S.viewerEmail=email;
+    S.lastLoaded=Date.now();
+    sessionStorage.setItem(CACHE_KEY,JSON.stringify({evs,email,date:new Date().toDateString()}));
+    render();
+    kickEnrichment(tok,evs);
+  } catch(e) {
+    S.error=e.message;
+  }
+  S.loading=false; render();
+}
+
+function kickEnrichment(tok,evs) {
+  evs.forEach(ev=>{
+    const ext=(ev.attendees||[]).filter(a=>!a.self&&!isInternal(a));
+    if(!ext.length) return;
+    const att=ext[0], key=att.email;
+    if(S.enrichCache[key]||S.enriching[key]) return;
+    S.enriching[key]=true; render();
+    fetchEmails(tok,att.email).then(emails=>enrichContact(att.displayName||att.email,att.email,ev.summary,emails))
+      .then(enr=>{ S.enrichCache[key]=enr; delete S.enriching[key]; render(); })
+      .catch(()=>{ delete S.enriching[key]; render(); });
+  });
+}
+
+// ── OAuth ─────────────────────────────────────────────────────────────────────
+function handleSignIn() {
+  if(CLIENT_ID==='YOUR_GOOGLE_CLIENT_ID_HERE') {
+    alert('Add your Google OAuth Client ID to the HTML file first.');
+    return;
+  }
+  function go() {
+    const client=google.accounts.oauth2.initTokenClient({
+      client_id:CLIENT_ID,
+      scope:SCOPES,
+      callback:(resp)=>{
+        if(resp.error){S.error='Sign-in failed.';render();return;}
+        S.token=resp.access_token;
+        sessionStorage.setItem(TOK_KEY,resp.access_token);
+        doLoad(resp.access_token);
+      }
+    });
+    client.requestAccessToken();
+  }
+  if(window.google?.accounts?.oauth2) { go(); return; }
+  const s=document.createElement('script');
+  s.src='https://accounts.google.com/gsi/client';
+  s.onload=go;
+  document.head.appendChild(s);
+}
+
+// ── init ──────────────────────────────────────────────────────────────────────
+const cached=sessionStorage.getItem(CACHE_KEY);
+if(cached) {
+  try {
+    const{evs,email,date}=JSON.parse(cached);
+    if(date===new Date().toDateString()){S.events=evs;S.viewerEmail=email;S.lastLoaded=Date.now();}
+  } catch(e){}
+}
+if(S.token&&!S.events) doLoad(S.token);
+else render();
+
+// Daily auto-refresh
+setInterval(()=>{
+  if(S.token){
+    const c=sessionStorage.getItem(CACHE_KEY);
+    if(!c||JSON.parse(c).date!==new Date().toDateString()) doLoad(S.token);
+  }
+},5*60*1000);
+</script>
+</body>
+</html>
