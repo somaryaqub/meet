@@ -181,6 +181,15 @@ body{font-family:'Alegreya Sans',sans-serif;background:var(--mist);color:var(--b
 </head>
 <body>
 <div class="app" id="root"></div>
+<div id="fatal-error" style="display:none;font-family:sans-serif;padding:2rem;color:#BB2D37;background:#fff5f5;margin:2rem;border-radius:8px;border:1px solid rgba(187,45,55,.2)">
+  <strong>JS Error:</strong> <span id="fatal-msg"></span>
+</div>
+<script>
+window.onerror = function(msg, src, line, col, err) {
+  document.getElementById('fatal-error').style.display = 'block';
+  document.getElementById('fatal-msg').textContent = msg + ' (line ' + line + ')';
+};
+</script>
 <script>
 // ── CONFIG ────────────────────────────────────────────────────────────────────
 const CLIENT_ID    = '81359003976-peulai0h863528iu5htb3sc7tknsamtc.apps.googleusercontent.com';
