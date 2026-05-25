@@ -135,7 +135,7 @@ body{font-family:'Alegreya Sans',sans-serif;background:var(--mist);color:var(--b
 .ctx-actions{font-size:12px;color:var(--red);margin-top:4px;font-weight:500}
 
 /* prep flag */
-.prep-flag{display:inline-flex;align-items:center;gap:3px;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500}
+.prep-flag{display:inline-flex;align-items:center;gap:3px;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;cursor:pointer;border:none;font-family:'Alegreya Sans',sans-serif;transition:opacity .12s}.prep-flag:hover{opacity:.75}
 .prep-yes{background:#e8f2ed;color:#1a4730;border:.5px solid rgba(39,93,67,.2)}
 .prep-no{background:#f9f3ee;color:#7a4d12;border:.5px solid rgba(224,153,100,.25)}
 
@@ -151,6 +151,19 @@ body{font-family:'Alegreya Sans',sans-serif;background:var(--mist);color:var(--b
 .dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
 @keyframes dp{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
 .enriching{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--mut)}
+
+
+/* ── prep modal ── */
+.modal-backdrop{position:fixed;inset:0;background:rgba(53,53,53,0.45);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(2px)}
+.modal{background:#fff;border-radius:16px;max-width:520px;width:100%;max-height:80vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(39,93,67,0.18)}
+.modal-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 20px 14px;border-bottom:.5px solid var(--bdr)}
+.modal-title{font-size:15px;font-weight:600;color:var(--blk);line-height:1.3;padding-right:12px}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--mut);font-size:20px;line-height:1;padding:2px 4px;flex-shrink:0;transition:color .1s}
+.modal-close:hover{color:var(--blk)}
+.modal-body{padding:16px 20px;overflow-y:auto;font-size:13.5px;line-height:1.65;color:var(--blk)}
+.modal-body a{color:var(--g);word-break:break-all}
+.modal-body p{margin-bottom:.75rem}
+.modal-body p:last-child{margin-bottom:0}
 
 /* empty */
 .empty{padding:1.5rem;text-align:center;color:var(--mut);font-size:13px;font-style:italic;background:#fff;border-radius:12px;border:.5px solid var(--bdr)}
@@ -394,7 +407,7 @@ function cardHtml(ev) {
             ${virt?modeBadge:(loc?modeBadge:'')}
             ${dur?`<span class="dur">${dur}</span>`:''}
             ${joinBtn}
-            <span class="prep-flag ${prep?'prep-yes':'prep-no'}">${prep?'📋 Prep materials':'No agenda'}</span>
+            <button class="prep-flag ${prep?'prep-yes':'prep-no'}" onclick="openPrepModal(${JSON.stringify(esc(ev.summary||'Meeting'))}, ${JSON.stringify(ev.description||'')})">${prep?'📋 Prep materials':'No agenda'}</button>
           </div>
           ${loc?`<div class="loc">${svgIcon('pin')} ${esc(loc)}</div>`:''}
         </div>
@@ -452,13 +465,11 @@ function cardHtml(ev) {
   if(boxes.length===1) ctxBoxes=`<div class="ctx-grid single">${boxes[0]}</div>`;
   else if(boxes.length===2) ctxBoxes=`<div class="ctx-grid">${boxes.join('')}</div>`;
 
-  const prepFlag=`<span class="prep-flag ${prep?'prep-yes':'prep-no'}">${prep?'📋 Has agenda':'No agenda'}</span>`;
-
   return `<div class="card ${typeClass}" id="card-${esc(ev.id)}">
     <button class="card-toggle" onclick="toggleCard('${esc(ev.id)}')" title="Toggle">${svgIcon('chevron')}</button>
     ${attendeesHtml}
     <div class="card-body">
-      ${ev.summary?`<div class="c-event">${svgIcon('calendar')} ${esc(ev.summary)} ${prepFlag}</div>`:`<div style="margin-top:6px">${prepFlag}</div>`}
+      ${ev.summary?`<div class="c-event">${svgIcon('calendar')} ${esc(ev.summary)} <button class="prep-flag ${prep?'prep-yes':'prep-no'}" onclick="openPrepModal(${JSON.stringify(esc(ev.summary||'Meeting'))}, ${JSON.stringify(ev.description||'')})">${prep?'📋 Prep materials':'No agenda'}</button></div>`:`<div style="margin-top:6px"><button class="prep-flag ${prep?'prep-yes':'prep-no'}" onclick="openPrepModal(${JSON.stringify(esc(ev.summary||'Meeting'))}, ${JSON.stringify(ev.description||'')})">${prep?'📋 Prep materials':'No agenda'}</button></div>`}
       ${ctxBoxes}
     </div>
   </div>`;
@@ -536,6 +547,42 @@ function dayHtml(label,evs,isToday) {
     ${buildTimeline(evs)}
   </div>`;
 }
+
+
+// ── prep modal ────────────────────────────────────────────────────────────────
+function openPrepModal(title, description) {
+  // Convert plain text description to basic HTML (links clickable, line breaks preserved)
+  const formatted = (description||'')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/(https?:\/\/[^\s<>"]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>')
+    .split(/
+
++/).map(p=>`<p>${p.replace(/
+/g,'<br>')}</p>`).join('');
+
+  const backdrop = document.createElement('div');
+  backdrop.className = 'modal-backdrop';
+  backdrop.id = 'prep-modal';
+  backdrop.innerHTML = `
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-hdr">
+        <div class="modal-title">${title}</div>
+        <button class="modal-close" onclick="closePrepModal()" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">${formatted||'<p style="color:var(--mut);font-style:italic">No description added to this calendar event.</p>'}</div>
+    </div>`;
+  backdrop.addEventListener('click', e => { if(e.target===backdrop) closePrepModal(); });
+  document.body.appendChild(backdrop);
+  document.addEventListener('keydown', escListener);
+}
+
+function closePrepModal() {
+  const el = document.getElementById('prep-modal');
+  if(el) el.remove();
+  document.removeEventListener('keydown', escListener);
+}
+
+function escListener(e) { if(e.key==='Escape') closePrepModal(); }
 
 // ── toggle collapse ───────────────────────────────────────────────────────────
 function toggleCard(id) {
