@@ -551,27 +551,23 @@ function dayHtml(label,evs,isToday) {
 
 // ── prep modal ────────────────────────────────────────────────────────────────
 function openPrepModal(title, description) {
-  // Convert plain text description to basic HTML (links clickable, line breaks preserved)
-  const formatted = (description||'')
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/(https?:\/\/[^\s<>"]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>')
-    .split(/
-
-+/).map(p=>`<p>${p.replace(/
-/g,'<br>')}</p>`).join('');
+  const raw = (description||'');
+  const escaped = raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const linked = escaped.replace(/(https?:\/\/[^\s<>"&]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+  const paragraphs = linked.split(/\n\n+/);
+  const formatted = paragraphs.map(function(p){ return '<p>'+p.replace(/\n/g,'<br>')+'</p>'; }).join('');
 
   const backdrop = document.createElement('div');
   backdrop.className = 'modal-backdrop';
   backdrop.id = 'prep-modal';
-  backdrop.innerHTML = `
-    <div class="modal" role="dialog" aria-modal="true">
-      <div class="modal-hdr">
-        <div class="modal-title">${title}</div>
-        <button class="modal-close" onclick="closePrepModal()" aria-label="Close">&times;</button>
-      </div>
-      <div class="modal-body">${formatted||'<p style="color:var(--mut);font-style:italic">No description added to this calendar event.</p>'}</div>
-    </div>`;
-  backdrop.addEventListener('click', e => { if(e.target===backdrop) closePrepModal(); });
+  backdrop.innerHTML = '<div class="modal" role="dialog" aria-modal="true">'
+    + '<div class="modal-hdr">'
+    + '<div class="modal-title">'+title+'</div>'
+    + '<button class="modal-close" onclick="closePrepModal()" aria-label="Close">&times;</button>'
+    + '</div>'
+    + '<div class="modal-body">'+(formatted||'<p style="color:var(--mut);font-style:italic">No description added to this calendar event.</p>')+'</div>'
+    + '</div>';
+  backdrop.addEventListener('click', function(e){ if(e.target===backdrop) closePrepModal(); });
   document.body.appendChild(backdrop);
   document.addEventListener('keydown', escListener);
 }
