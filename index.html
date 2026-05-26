@@ -15,692 +15,721 @@
   --blk:#353535;--mist:#FAFAF2;
   --bdr:rgba(39,93,67,0.13);--bdr2:rgba(39,93,67,0.25);
   --mut:rgba(53,53,53,0.52);
-  --shadow:0 1px 4px rgba(39,93,67,0.07),0 4px 16px rgba(39,93,67,0.05);
 }
 body{font-family:'Alegreya Sans',sans-serif;background:var(--mist);color:var(--blk);min-height:100vh}
-.app{max-width:840px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+.app{max-width:800px;margin:0 auto;padding:2.25rem 1.5rem 5rem}
 
-/* ── header ── */
-.hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2.5rem;flex-wrap:wrap;gap:12px}
-.hdr-title{font-size:1.9rem;font-weight:700;color:var(--blk);line-height:1.1;letter-spacing:-.01em}
-.hdr-sub{font-size:12.5px;color:var(--mut);margin-top:5px}
-.hdr-r{display:flex;flex-direction:column;align-items:flex-end;gap:7px}
-.date-pill{background:var(--g);color:#fff;font-size:11px;font-weight:500;padding:5px 14px;border-radius:20px;letter-spacing:.04em}
-.btn-sm{background:none;border:1px solid var(--bdr2);color:var(--g);font-family:'Alegreya Sans',sans-serif;font-size:12px;padding:5px 13px;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:background .12s}
-.btn-sm:hover{background:var(--gl)}
-.btn-sm svg{width:12px;height:12px;flex-shrink:0}
+/* header */
+.hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:10px}
+.hdr-title{font-size:1.75rem;font-weight:700;color:var(--blk);line-height:1.1;letter-spacing:-.01em}
+.hdr-sub{font-size:12px;color:var(--mut);margin-top:4px}
+.hdr-r{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.date-pill{background:var(--g);color:#fff;font-size:11px;font-weight:500;padding:4px 12px;border-radius:20px;letter-spacing:.04em}
+.btn-refresh{background:none;border:.5px solid var(--bdr2);color:var(--g);font-family:'Alegreya Sans',sans-serif;font-size:11px;padding:4px 11px;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.btn-refresh:hover{background:var(--gl)}
 
-/* ── auth ── */
+/* auth */
 .auth{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center}
-.auth-logo{width:52px;height:52px;background:var(--g);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem}
-.auth-logo svg{width:24px;height:24px;stroke:#fff}
-.auth h2{font-size:1.7rem;font-weight:700;margin-bottom:.5rem}
-.auth p{font-size:13.5px;color:var(--mut);max-width:340px;line-height:1.65;margin:0 auto 1.75rem}
-.auth-btn{background:var(--g);color:#fff;border:none;font-family:'Alegreya Sans',sans-serif;font-size:14px;font-weight:500;padding:11px 26px;border-radius:40px;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:background .12s;box-shadow:0 2px 8px rgba(39,93,67,0.25)}
+.auth-icon{width:48px;height:48px;background:var(--g);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem}
+.auth h2{font-size:1.6rem;font-weight:700;margin-bottom:.5rem}
+.auth p{font-size:13px;color:var(--mut);max-width:320px;line-height:1.65;margin:0 auto 1.5rem}
+.auth-btn{background:var(--g);color:#fff;border:none;font-family:'Alegreya Sans',sans-serif;font-size:14px;font-weight:500;padding:10px 24px;border-radius:40px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
 .auth-btn:hover{background:var(--gm)}
 .auth-note{font-size:11px;color:var(--mut);margin-top:10px}
 
-/* ── loading ── */
-.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:45vh;gap:.875rem}
-.spin{width:28px;height:28px;border:2px solid var(--bdr2);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
+/* loading */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:45vh;gap:.75rem}
+.spin{width:26px;height:26px;border:2px solid var(--bdr2);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading p{font-size:13px;color:var(--mut)}
 
-/* ── alerts ── */
-.err{background:var(--redl);border:1px solid rgba(187,45,55,.18);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:1rem}
-.notice{background:var(--gl);border:1px solid rgba(39,93,67,.18);border-radius:8px;padding:10px 14px;font-size:12.5px;color:#1a4730;margin-bottom:1.25rem;display:flex;align-items:center;gap:7px}
-.notice svg{width:14px;height:14px;flex-shrink:0}
+/* alerts */
+.err{background:var(--redl);border:.5px solid rgba(187,45,55,.2);border-radius:8px;padding:9px 13px;font-size:13px;color:var(--red);margin-bottom:1rem}
+.notice{background:var(--gl);border:.5px solid rgba(39,93,67,.18);border-radius:8px;padding:9px 13px;font-size:12px;color:#1a4730;margin-bottom:1rem;display:flex;align-items:center;gap:6px}
 
-/* ── day section ── */
-.day{margin-bottom:2.5rem}
-.day-hdr{display:flex;align-items:center;gap:12px;margin-bottom:1.125rem}
-.day-hdr h2{font-size:1.15rem;font-weight:700;white-space:nowrap;letter-spacing:-.01em}
-.day-label-today{color:var(--g)}
-.day-label-tmrw{color:var(--blk);opacity:.7}
-.day-pill{font-size:11px;font-weight:400;color:var(--mut);background:#fff;border:.5px solid var(--bdr2);padding:2px 10px;border-radius:20px;white-space:nowrap}
+/* day */
+.day{margin-bottom:2.25rem}
+.day-hdr{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.day-hdr h2{font-size:12px;font-weight:700;white-space:nowrap;letter-spacing:.05em;text-transform:uppercase}
+.day-hdr h2.today{color:var(--g)}
+.day-hdr h2.tmrw{color:var(--blk);opacity:.55}
+.day-date{font-size:11px;color:var(--mut);white-space:nowrap}
 .day-line{flex:1;height:.5px;background:var(--bdr2)}
-.day-count{font-size:12px;color:var(--mut);white-space:nowrap}
+.day-count{font-size:11px;color:var(--mut);white-space:nowrap}
 
-/* ── timeline ── */
-.timeline{position:relative;padding-left:80px}
-.timeline::before{content:'';position:absolute;left:64px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--bdr2) 5%,var(--bdr2) 95%,transparent)}
+/* timeline */
+.tl{position:relative;padding-left:68px}
+.tl::before{content:'';position:absolute;left:52px;top:4px;bottom:4px;width:.5px;background:var(--bdr2)}
 
-/* ── time slot ── */
-.slot{position:relative;margin-bottom:0}
-.slot-time-label{position:absolute;left:-80px;width:68px;text-align:right;font-size:12px;font-weight:500;color:var(--g);top:14px;line-height:1}
-.slot-time-dot{position:absolute;left:-8px;top:18px;width:8px;height:8px;border-radius:50%;background:var(--g);border:2px solid var(--mist);z-index:1}
-.slot-time-dot.virtual{background:var(--br)}
-.slot-time-dot.internal{background:#bbb}
-.slot-cards{padding:0 0 20px 16px}
+/* slot */
+.slot{position:relative}
+.slot-time{position:absolute;left:-68px;width:48px;text-align:right;font-size:11px;font-weight:500;color:var(--g);top:16px;line-height:1}
+.slot-dot{position:absolute;left:-7px;top:19px;width:7px;height:7px;border-radius:50%;background:var(--g);border:1.5px solid var(--mist);z-index:1}
+.slot-dot.virt{background:var(--br)}
+.slot-dot.int{background:#c0c0c0}
+.slot-cards{padding:0 0 12px 14px}
 
-/* ── gap indicator ── */
-.gap-indicator{position:relative;padding:6px 0 6px 16px;display:flex;align-items:center;gap:6px}
-.gap-line{flex:1;height:.5px;background:var(--bdr);margin-right:8px}
-.gap-label{font-size:11px;color:var(--mut);white-space:nowrap;font-style:italic}
+/* gap + now */
+.gap-row{padding:3px 0 3px 14px;display:flex;align-items:center;gap:6px}
+.gap-line{flex:1;height:.5px;background:var(--bdr)}
+.gap-txt{font-size:10px;color:var(--mut);font-style:italic;white-space:nowrap}
+.now-row{padding:0 0 8px 14px;display:flex;align-items:center;gap:6px}
+.now-dot{width:7px;height:7px;border-radius:50%;background:var(--red);flex-shrink:0}
+.now-lbl{font-size:10px;font-weight:700;color:var(--red);letter-spacing:.04em;white-space:nowrap}
+.now-bar{flex:1;height:.5px;background:rgba(187,45,55,.3)}
 
-/* ── now indicator ── */
-.now-line{position:relative;padding:0 0 0 16px;margin:4px 0 8px;display:flex;align-items:center;gap:8px}
-.now-dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;box-shadow:0 0 0 3px rgba(187,45,55,.15)}
-.now-label{font-size:11px;font-weight:600;color:var(--red);letter-spacing:.03em}
-.now-bar{flex:1;height:1px;background:rgba(187,45,55,.25)}
+/* card */
+.card{background:#fff;border:.5px solid var(--bdr);border-radius:0 12px 12px 0;border-left:2.5px solid var(--g);margin-bottom:5px;overflow:hidden}
+.card.virt{border-left-color:var(--br)}
+.card.int{border-left-color:#ccc}
+.card.past{opacity:.45;pointer-events:none}
 
-/* ── card ── */
-.card{background:#fff;border:.5px solid var(--bdr);border-radius:12px;padding:14px 16px;margin-bottom:6px;box-shadow:var(--shadow);transition:box-shadow .15s,border-color .15s;position:relative;overflow:hidden}
-.card:hover{box-shadow:0 2px 8px rgba(39,93,67,0.1),0 6px 20px rgba(39,93,67,0.07);border-color:var(--bdr2)}
-.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g);border-radius:0}
-.card.virtual::before{background:var(--br)}
-.card.internal::before{background:#ccc}
-.card.urgent::before{background:var(--red)}
+/* card top row */
+.card-top{display:flex;align-items:center;gap:12px;padding:11px 14px}
+.avatars{display:flex;flex-shrink:0}
+.av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;flex-shrink:0;border:2px solid #fff;overflow:hidden;background:var(--gl);color:#1a4730}
+.av+.av{margin-left:-14px}
+.av.int{background:#f0f0ef;color:#888}
+.av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.card-mid{flex:1;min-width:0}
+.card-people{font-size:14px;font-weight:600;color:var(--blk);line-height:1.3;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 4px}
+.card-people a{color:var(--blk);text-decoration:none;border-bottom:.5px dashed var(--bdr2)}
+.card-people a:hover{color:var(--g);border-bottom-color:var(--g)}
+.card-people .orgs{font-size:12px;font-weight:400;color:var(--mut);margin-left:2px}
+.card-meta{font-size:12px;color:var(--mut);margin-top:2px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.card-meta .title{color:var(--blk);font-weight:500}
+.card-meta .sep{opacity:.4}
+.card-action{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.join-btn{font-size:11px;font-weight:600;color:#fff;background:var(--br);border:none;border-radius:20px;padding:4px 12px;cursor:pointer;letter-spacing:.02em;white-space:nowrap}
+.join-btn:hover{opacity:.88}
+.loc-pill{font-size:11px;font-weight:500;color:#1a4730;background:var(--gl);border:.5px solid rgba(39,93,67,.2);border-radius:20px;padding:4px 10px;white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis}
+.dur{font-size:11px;color:var(--mut)}
 
-/* card collapse */
-.card.collapsed .card-body{display:none}
-.card.collapsed{opacity:.75}
-.card-toggle{position:absolute;right:12px;top:12px;background:none;border:none;cursor:pointer;color:var(--mut);padding:2px;line-height:1;font-size:16px;transition:transform .2s}
-.card.collapsed .card-toggle{transform:rotate(-90deg)}
+/* card context */
+.card-ctx{border-top:.5px solid var(--bdr);padding:10px 14px;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.card-ctx.single{grid-template-columns:1fr}
+.ctx-box{padding:8px 10px;background:var(--mist);border-radius:8px;border:.5px solid var(--bdr)}
+.ctx-lbl{font-size:9px;color:var(--mut);letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
+.ctx-txt{font-size:12.5px;color:var(--blk);line-height:1.5}
+.ctx-sub{font-size:10px;color:var(--mut);margin-top:2px}
+.ctx-action{font-size:11.5px;color:var(--red);margin-top:3px;font-weight:500}
+.ctx-enriching{grid-column:1/-1;display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mut);padding:4px 0}
 
-.card-top{display:flex;align-items:flex-start;gap:12px;padding-right:20px}
-.avatar{width:42px;height:42px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--g);flex-shrink:0;border:.5px solid var(--bdr);overflow:hidden}
-.avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.cb{flex:1;min-width:0}
-.c-name{font-size:15px;font-weight:600;color:var(--blk);line-height:1.2}
-.c-role{font-size:12px;color:var(--mut);margin-top:2px}
-.c-org{font-size:12px;color:var(--g);margin-top:1px;font-style:italic}
-.c-bio{font-size:13px;color:var(--mut);line-height:1.55;margin-top:5px;font-style:italic}
-.c-event{font-size:12px;color:var(--mut);margin-top:8px;padding-top:8px;border-top:.5px solid var(--bdr);display:flex;align-items:center;gap:4px}
-
-/* badges */
-.badges{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:7px}
-.badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
-.bv{background:var(--brl);color:#7a4d12;border:.5px solid rgba(224,153,100,.3)}
-.bp{background:var(--gl);color:#1a4730;border:.5px solid rgba(39,93,67,.2)}
-.bi{background:#f3f3f2;color:#666;border:.5px solid rgba(0,0,0,.08)}
-.dur{font-size:11px;color:var(--mut);padding:0 4px}
-.loc{font-size:12px;color:var(--g);margin-top:4px;display:flex;align-items:center;gap:3px}
-
-/* action links */
-.action-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px}
-.action-link{font-size:11px;color:var(--g);text-decoration:none;display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border:.5px solid var(--bdr2);border-radius:20px;transition:background .1s}
-.action-link:hover{background:var(--gl)}
-.action-link.join{background:var(--g);color:#fff;border-color:var(--g)}
-.action-link.join:hover{background:var(--gm)}
-
-/* context boxes */
-.ctx-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.ctx-grid.single{grid-template-columns:1fr}
-.ctx-box{padding:10px 12px;background:var(--mist);border-radius:8px;border:.5px solid var(--bdr)}
-.ctx-lbl{font-size:10px;color:var(--mut);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:4px}
-.ctx-lbl svg{width:10px;height:10px}
-.ctx-txt{font-size:13px;color:var(--blk);line-height:1.5}
-.ctx-sub{font-size:11px;color:var(--mut);margin-top:3px}
-.ctx-actions{font-size:12px;color:var(--red);margin-top:4px;font-weight:500}
-
-/* prep flag */
-.prep-flag{display:inline-flex;align-items:center;gap:3px;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;cursor:pointer;border:none;font-family:'Alegreya Sans',sans-serif;transition:opacity .12s}.prep-flag:hover{opacity:.75}
-.prep-yes{background:#e8f2ed;color:#1a4730;border:.5px solid rgba(39,93,67,.2)}
-.prep-no{background:#f9f3ee;color:#7a4d12;border:.5px solid rgba(224,153,100,.25)}
-
-/* last met */
-.last-met{font-size:11px;color:var(--mut);margin-top:2px;display:flex;align-items:center;gap:3px}
-
-/* divider between attendees */
-.att-divider{border:none;border-top:.5px solid var(--bdr);margin:12px 0}
-
-/* enriching dots */
-.dots{display:inline-flex;gap:3px;align-items:center}
-.dots span{width:4px;height:4px;background:var(--br);border-radius:50%;animation:dp 1.2s infinite}
-.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
-@keyframes dp{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
-.enriching{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--mut)}
-
-
-/* ── prep modal ── */
-.modal-backdrop{position:fixed;inset:0;background:rgba(53,53,53,0.45);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(2px)}
-.modal{background:#fff;border-radius:16px;max-width:520px;width:100%;max-height:80vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(39,93,67,0.18)}
-.modal-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 20px 14px;border-bottom:.5px solid var(--bdr)}
-.modal-title{font-size:15px;font-weight:600;color:var(--blk);line-height:1.3;padding-right:12px}
-.modal-close{background:none;border:none;cursor:pointer;color:var(--mut);font-size:20px;line-height:1;padding:2px 4px;flex-shrink:0;transition:color .1s}
-.modal-close:hover{color:var(--blk)}
-.modal-body{padding:16px 20px;overflow-y:auto;font-size:13.5px;line-height:1.65;color:var(--blk)}
-.modal-body a{color:var(--g);word-break:break-all}
-.modal-body p{margin-bottom:.75rem}
+/* modal */
+.modal-back{position:fixed;inset:0;background:rgba(53,53,53,.5);z-index:100;display:flex;align-items:center;justify-content:center;padding:1.5rem}
+.modal{background:#fff;border-radius:14px;max-width:500px;width:100%;max-height:78vh;overflow:hidden;display:flex;flex-direction:column}
+.modal-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:16px 18px 12px;border-bottom:.5px solid var(--bdr)}
+.modal-title{font-size:14px;font-weight:600;color:var(--blk);line-height:1.3;padding-right:10px}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--mut);font-size:20px;line-height:1;padding:0 3px}
+.modal-body{padding:14px 18px;overflow-y:auto;font-size:13px;line-height:1.65;color:var(--blk)}
+.modal-body p{margin-bottom:.625rem}
 .modal-body p:last-child{margin-bottom:0}
+.modal-body a{color:var(--g);word-break:break-all}
+
+/* dots */
+.dots{display:inline-flex;gap:3px;align-items:center}
+.dots span{width:3px;height:3px;border-radius:50%;background:var(--br);display:inline-block;animation:dp 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes dp{0%,80%,100%{opacity:.2}40%{opacity:1}}
 
 /* empty */
-.empty{padding:1.5rem;text-align:center;color:var(--mut);font-size:13px;font-style:italic;background:#fff;border-radius:12px;border:.5px solid var(--bdr)}
+.empty{padding:1.25rem;text-align:center;color:var(--mut);font-size:13px;font-style:italic;background:#fff;border-radius:12px;border:.5px solid var(--bdr)}
 
-@media(max-width:640px){
-  .app{padding:1.5rem 1rem 3rem}
+/* fatal error */
+.fatal{display:none;font-family:sans-serif;padding:1.5rem;color:var(--red);background:var(--redl);margin:1.5rem;border-radius:8px;border:.5px solid rgba(187,45,55,.2)}
+
+@media(max-width:600px){
+  .app{padding:1.25rem 1rem 3rem}
   .hdr{flex-direction:column}
   .hdr-r{align-items:flex-start;flex-direction:row}
-  .timeline{padding-left:60px}
-  .timeline::before{left:48px}
-  .slot-time-label{left:-60px;width:50px;font-size:11px}
-  .ctx-grid{grid-template-columns:1fr}
+  .tl{padding-left:52px}
+  .tl::before{left:38px}
+  .slot-time{left:-52px;width:36px;font-size:10px}
+  .card-ctx{grid-template-columns:1fr}
+  .av{width:38px;height:38px;font-size:12px}
 }
 </style>
 </head>
 <body>
 <div class="app" id="root"></div>
-<div id="fatal-error" style="display:none;font-family:sans-serif;padding:2rem;color:#BB2D37;background:#fff5f5;margin:2rem;border-radius:8px;border:1px solid rgba(187,45,55,.2)">
-  <strong>JS Error:</strong> <span id="fatal-msg"></span>
-</div>
+<div class="fatal" id="fatal-err"><strong>Error:</strong> <span id="fatal-msg"></span></div>
 <script>
-window.onerror = function(msg, src, line, col, err) {
-  document.getElementById('fatal-error').style.display = 'block';
-  document.getElementById('fatal-msg').textContent = msg + ' (line ' + line + ')';
+window.onerror = function(msg,src,line){
+  document.getElementById('fatal-err').style.display='block';
+  document.getElementById('fatal-msg').textContent = msg+' (line '+line+')';
 };
 </script>
 <script>
-// ── CONFIG ────────────────────────────────────────────────────────────────────
-const CLIENT_ID    = '81359003976-peulai0h863528iu5htb3sc7tknsamtc.apps.googleusercontent.com';
+// ── CONFIG ─────────────────────────────────────────────────────────────────
+const CLIENT_ID      = '81359003976-peulai0h863528iu5htb3sc7tknsamtc.apps.googleusercontent.com';
 const OWNER_CALENDAR = 'omar@islamicfamily.ca';
 const OWNER_NAME     = 'Omar Yaqub';
-// ─────────────────────────────────────────────────────────────────────────────
+// ───────────────────────────────────────────────────────────────────────────
 
-const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly openid email';
+const SCOPES = [
+  'https://www.googleapis.com/auth/calendar.readonly',
+  'https://www.googleapis.com/auth/gmail.readonly',
+  'https://www.googleapis.com/auth/contacts.readonly',
+  'openid','email'
+].join(' ');
+
 const IF_DOMAINS = ['islamicfamily.ca','flourishing.systems'];
-const IF_KW = ['islamicfamily','islamic family','flourishing systems'];
-const CACHE_KEY = 'mb_cache_v4';
-const TOK_KEY   = 'mb_gtoken_v3';
+const IF_KW      = ['islamicfamily','islamic family','flourishing systems'];
+const CACHE_KEY  = 'mb_cache_v5';
+const TOK_KEY    = 'mb_tok_v5';
 
-let S = {
+var S = {
   token: sessionStorage.getItem(TOK_KEY)||null,
   viewerEmail: null,
   events: null,
   loading: false,
   error: null,
   lastLoaded: null,
-  enrichCache: {},
-  enriching: {},
-  collapsed: {}   // eventId -> bool
+  enrichCache: {},   // email -> enrichment data
+  photoCache: {},    // email -> photo url or null
+  enriching: {}      // email -> bool
 };
 
-// ── pure helpers ──────────────────────────────────────────────────────────────
-const isInternal = a => {
+// ── helpers ──────────────────────────────────────────────────────────────────
+function isInternal(a){
   if(!a) return false;
-  const e=(a.email||'').toLowerCase(), n=(a.displayName||'').toLowerCase();
-  return IF_DOMAINS.some(d=>e.includes(d))||IF_KW.some(k=>n.includes(k)||e.includes(k));
-};
-const initials = name =>
-  (name||'?').split(' ').filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('')||'?';
-const fmtTime = iso =>
-  iso ? new Date(iso).toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit',hour12:true}) : '';
-const fmtDur = (s,e) => {
+  var e=(a.email||'').toLowerCase(), n=(a.displayName||'').toLowerCase();
+  return IF_DOMAINS.some(function(d){return e.indexOf(d)>-1;}) ||
+    IF_KW.some(function(k){return n.indexOf(k)>-1||e.indexOf(k)>-1;});
+}
+function initials(name){
+  return (name||'?').split(' ').filter(Boolean).slice(0,2).map(function(w){return w[0].toUpperCase();}).join('')||'?';
+}
+function fmtTime(iso){
+  if(!iso) return '';
+  return new Date(iso).toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit',hour12:true});
+}
+function fmtDur(s,e){
   if(!s||!e) return '';
-  const m=Math.round((new Date(e)-new Date(s))/60000);
+  var m=Math.round((new Date(e)-new Date(s))/60000);
   if(m<60) return m+'m';
-  const h=Math.floor(m/60),r=m%60;
-  return r?`${h}h ${r}m`:`${h}h`;
-};
-const fmtGap = mins => {
+  var h=Math.floor(m/60),r=m%60;
+  return r?(h+'h '+r+'m'):(h+'h');
+}
+function fmtGap(mins){
   if(mins<5) return null;
-  if(mins<60) return `${mins} min gap`;
-  const h=Math.floor(mins/60),r=mins%60;
-  return r?`${h}h ${r}m gap`:`${h}h gap`;
-};
-const isVirtual = ev => {
-  const l=(ev.location||'').toLowerCase(), d=(ev.description||'').toLowerCase();
-  return l.includes('zoom')||l.includes('meet')||l.includes('teams')||
-    l.startsWith('https://')||d.includes('zoom')||d.includes('meet.google')||
-    d.includes('teams.microsoft')||d.includes('join the meeting');
-};
-const isUrgent = ev => /urgent|critical|asap|emergency/i.test(ev.summary||'');
-const getLocLabel = ev => {
-  const l=ev.location||'';
-  if(!l||l.toLowerCase().startsWith('http')) return null;
-  return l.length>60?l.slice(0,57)+'…':l;
-};
-const getMeetLink = ev => {
-  const l=ev.location||'', d=ev.description||'';
-  const urlRe=/(https?:\/\/[^\s"<>]+)/g;
-  const matches=[...l.matchAll(urlRe),...d.matchAll(urlRe)].map(m=>m[1]);
-  return matches.find(u=>u.includes('zoom')||u.includes('meet.google')||u.includes('teams.microsoft'))||null;
-};
-const hasPrep = ev => {
-  const d=ev.description||'';
-  return d.length>80||d.includes('agenda')||d.includes('http')||d.includes('doc')||d.includes('drive');
-};
-const dayBounds = offset => {
-  const d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+offset);
-  const e=new Date(d); e.setDate(d.getDate()+1);
+  if(mins<60) return mins+'m gap';
+  var h=Math.floor(mins/60),r=mins%60;
+  return r?(h+'h '+r+'m gap'):(h+'h gap');
+}
+function isVirtual(ev){
+  var l=(ev.location||'').toLowerCase(), d=(ev.description||'').toLowerCase();
+  return l.indexOf('zoom')>-1||l.indexOf('meet')>-1||l.indexOf('teams')>-1||
+    l.indexOf('https://')===0||d.indexOf('zoom')>-1||d.indexOf('meet.google')>-1||
+    d.indexOf('teams.microsoft')>-1||d.indexOf('join the meeting')>-1;
+}
+function getMeetLink(ev){
+  var l=ev.location||'', d=ev.description||'';
+  var combined=l+' '+d;
+  var m=combined.match(/(https?:\/\/[^\s"<>]+)/g)||[];
+  return m.find(function(u){
+    return u.indexOf('zoom')>-1||u.indexOf('meet.google')>-1||u.indexOf('teams.microsoft')>-1;
+  })||null;
+}
+function getLocLabel(ev){
+  var l=ev.location||'';
+  if(!l||l.toLowerCase().indexOf('http')===0) return null;
+  return l.length>35?l.slice(0,32)+'…':l;
+}
+function hasPrep(ev){
+  var d=ev.description||'';
+  return d.length>80||d.toLowerCase().indexOf('agenda')>-1||d.indexOf('http')>-1;
+}
+function dayBounds(offset){
+  var d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+offset);
+  var e=new Date(d); e.setDate(d.getDate()+1);
   return {start:d,end:e};
-};
-const nowStr = () =>
-  new Date().toLocaleDateString('en-CA',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
-const esc = s =>
-  String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function nowStr(){
+  return new Date().toLocaleDateString('en-CA',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+}
+function esc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function liUrl(name, org){
+  var q = org ? (name+' '+org) : name;
+  return 'https://www.linkedin.com/search/results/people/?keywords='+encodeURIComponent(q);
+}
 
 // ── Google API ────────────────────────────────────────────────────────────────
-async function fetchEvents(tok) {
-  const {start}=dayBounds(0), {end}=dayBounds(2);
-  const calId=encodeURIComponent(OWNER_CALENDAR);
-  const url=`https://www.googleapis.com/calendar/v3/calendars/${calId}/events?timeMin=${start.toISOString()}&timeMax=${end.toISOString()}&singleEvents=true&orderBy=startTime&maxResults=50`;
-  const r=await fetch(url,{headers:{Authorization:`Bearer ${tok}`}});
-  if(r.status===401) throw new Error('401');
-  const d=await r.json();
-  if(d.error) throw new Error(d.error.message);
-  return (d.items||[]).filter(e=>e.status!=='cancelled'&&e.start?.dateTime);
+function apiFetch(tok, url){
+  return fetch(url, {headers:{Authorization:'Bearer '+tok}}).then(function(r){
+    if(r.status===401) throw new Error('401');
+    return r.json();
+  });
 }
 
-async function fetchViewerEmail(tok) {
-  try {
-    const r=await fetch('https://www.googleapis.com/oauth2/v2/userinfo',{headers:{Authorization:`Bearer ${tok}`}});
-    const d=await r.json();
-    return d.email||null;
-  } catch(e){ return null; }
+function fetchEvents(tok){
+  var start=dayBounds(0).start, end=dayBounds(2).end;
+  var calId=encodeURIComponent(OWNER_CALENDAR);
+  var url='https://www.googleapis.com/calendar/v3/calendars/'+calId+'/events'
+    +'?timeMin='+start.toISOString()+'&timeMax='+end.toISOString()
+    +'&singleEvents=true&orderBy=startTime&maxResults=50';
+  return apiFetch(tok,url).then(function(d){
+    if(d.error) throw new Error(d.error.message);
+    return (d.items||[]).filter(function(e){
+      return e.status!=='cancelled' && e.start && e.start.dateTime;
+    });
+  });
 }
 
-async function fetchPastMeetings(tok, email) {
-  try {
-    // Search past calendar events with this attendee
-    const calId=encodeURIComponent(OWNER_CALENDAR);
-    const past=new Date(); past.setMonth(past.getMonth()-6);
-    const url=`https://www.googleapis.com/calendar/v3/calendars/${calId}/events?timeMin=${past.toISOString()}&timeMax=${new Date().toISOString()}&singleEvents=true&orderBy=startTime&maxResults=50&q=${encodeURIComponent(email)}`;
-    const r=await fetch(url,{headers:{Authorization:`Bearer ${tok}`}});
-    const d=await r.json();
-    const matches=(d.items||[]).filter(e=>
-      e.status!=='cancelled'&&
-      (e.attendees||[]).some(a=>(a.email||'').toLowerCase()===email.toLowerCase())
-    );
+function fetchViewerEmail(tok){
+  return apiFetch(tok,'https://www.googleapis.com/oauth2/v2/userinfo')
+    .then(function(d){return d.email||null;})
+    .catch(function(){return null;});
+}
+
+function fetchContactPhoto(tok, email){
+  // Google People API — search contacts by email
+  var url='https://people.googleapis.com/v1/people:searchContacts'
+    +'?query='+encodeURIComponent(email)
+    +'&readMask=photos,names,emailAddresses,organizations,phoneNumbers'
+    +'&sources=READ_SOURCE_TYPE_CONTACT';
+  return apiFetch(tok, url).then(function(d){
+    var results=d.results||[];
+    for(var i=0;i<results.length;i++){
+      var p=results[i].person||{};
+      // Match on email
+      var emails=p.emailAddresses||[];
+      var match=emails.some(function(ea){
+        return (ea.value||'').toLowerCase()===(email||'').toLowerCase();
+      });
+      if(match){
+        var photos=p.photos||[];
+        var photo=photos.find(function(ph){return !ph.default;});
+        return photo?photo.url:null;
+      }
+    }
+    return null;
+  }).catch(function(){return null;});
+}
+
+function fetchPastMeetings(tok, email){
+  var past=new Date(); past.setMonth(past.getMonth()-6);
+  var calId=encodeURIComponent(OWNER_CALENDAR);
+  var url='https://www.googleapis.com/calendar/v3/calendars/'+calId+'/events'
+    +'?timeMin='+past.toISOString()+'&timeMax='+new Date().toISOString()
+    +'&singleEvents=true&orderBy=startTime&maxResults=100'
+    +'&q='+encodeURIComponent(email);
+  return apiFetch(tok,url).then(function(d){
+    var matches=(d.items||[]).filter(function(e){
+      return e.status!=='cancelled' &&
+        (e.attendees||[]).some(function(a){
+          return (a.email||'').toLowerCase()===email.toLowerCase();
+        });
+    });
     if(!matches.length) return null;
-    const last=matches[matches.length-1];
-    return new Date(last.start?.dateTime).toLocaleDateString('en-CA',{month:'long',day:'numeric'});
-  } catch(e){ return null; }
+    var last=matches[matches.length-1];
+    var lastDate=new Date(last.start.dateTime);
+    var now=new Date();
+    var diffDays=Math.round((now-lastDate)/86400000);
+    if(diffDays===0) return 'met today';
+    if(diffDays===1) return 'met yesterday';
+    if(diffDays<7) return 'met '+diffDays+' days ago';
+    if(diffDays<14) return 'met 1 week ago';
+    if(diffDays<30) return 'met '+Math.round(diffDays/7)+' weeks ago';
+    if(diffDays<60) return 'met 1 month ago';
+    return 'met '+Math.round(diffDays/30)+' months ago';
+  }).catch(function(){return null;});
 }
 
-async function fetchEmails(tok, email) {
-  try {
-    const q=encodeURIComponent(`from:${email} OR to:${email}`);
-    const r=await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages?q=${q}&maxResults=3`,{headers:{Authorization:`Bearer ${tok}`}});
-    const d=await r.json();
-    if(!d.messages) return [];
-    return await Promise.all(d.messages.slice(0,3).map(async m=>{
-      const r2=await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${m.id}?format=metadata&metadataHeaders=Subject&metadataHeaders=Date`,{headers:{Authorization:`Bearer ${tok}`}});
-      const d2=await r2.json();
-      const hdrs=d2.payload?.headers||[];
-      return {
-        subject:hdrs.find(h=>h.name==='Subject')?.value||'(no subject)',
-        date:hdrs.find(h=>h.name==='Date')?.value||'',
-        snippet:d2.snippet||''
-      };
-    }));
-  } catch(e){ return []; }
+function fetchEmails(tok, email){
+  var q=encodeURIComponent('from:'+email+' OR to:'+email);
+  return apiFetch(tok,'https://gmail.googleapis.com/gmail/v1/users/me/messages?q='+q+'&maxResults=3')
+    .then(function(d){
+      if(!d.messages) return [];
+      return Promise.all(d.messages.slice(0,3).map(function(m){
+        return apiFetch(tok,'https://gmail.googleapis.com/gmail/v1/users/me/messages/'+m.id
+          +'?format=metadata&metadataHeaders=Subject&metadataHeaders=Date')
+          .then(function(d2){
+            var hdrs=d2.payload&&d2.payload.headers||[];
+            return {
+              subject:(hdrs.find(function(h){return h.name==='Subject';})||{}).value||'(no subject)',
+              date:(hdrs.find(function(h){return h.name==='Date';})||{}).value||'',
+              snippet:d2.snippet||''
+            };
+          });
+      }));
+    }).catch(function(){return [];});
 }
 
-async function enrichContact(name, email, meetingTitle, meetingDesc, emails, lastMet) {
-  const ctx=emails.slice(0,3).map(e=>`Subject: ${e.subject}\nDate: ${e.date}\nSnippet: ${e.snippet}`).join('\n---\n');
-  const prompt=`${OWNER_NAME} (Executive Director, IslamicFamily Edmonton) is meeting: ${name} (${email}).
-Meeting: "${meetingTitle}"
-Meeting description/agenda: ${meetingDesc||'none'}
-Last met: ${lastMet||'unknown'}
+function enrichContact(name, email, meetingTitle, meetingDesc, emails, lastMet){
+  var ctx=emails.slice(0,3).map(function(e){
+    return 'Subject: '+e.subject+'\nDate: '+e.date+'\nSnippet: '+e.snippet;
+  }).join('\n---\n');
 
-Recent emails:
-${ctx||'None found.'}
+  var prompt = OWNER_NAME+' (Executive Director, IslamicFamily Edmonton) is meeting '
+    +name+' ('+email+').\nMeeting: "'+meetingTitle+'"\n'
+    +(meetingDesc?'Description: '+meetingDesc.slice(0,300)+'\n':'')
+    +(lastMet?'Last met: '+lastMet+'\n':'')
+    +'\nRecent emails:\n'+(ctx||'None.')+'\n\n'
+    +'Reply ONLY with valid JSON, no markdown, no backticks:\n'
+    +'{"title":"job title if inferable from signature or context, else empty",'
+    +'"org":"organization name if inferable, else empty",'
+    +'"orgDesc":"one short phrase what their org does, else empty",'
+    +'"emailSummary":"1-2 sentences most relevant email context for this meeting, or empty",'
+    +'"emailDate":"most recent email date readable, or empty",'
+    +'"actionItems":"specific open ask or commitment from emails relevant to this meeting, or empty",'
+    +'"meetingPurpose":"1 sentence likely purpose of this meeting based on title description and emails"}';
 
-Respond ONLY with valid JSON (no backticks, no markdown):
-{
-  "title": "job title if inferable, else empty string",
-  "org": "organization name if inferable, else empty string",
-  "orgDesc": "one short phrase describing what their org does, if inferable, else empty string",
-  "emailSummary": "1-2 sentences summarizing the email thread context most relevant to this meeting, or empty string",
-  "emailDate": "most recent email date as readable string, or empty string",
-  "actionItems": "any open asks or commitments mentioned in emails relevant to this meeting, or empty string",
-  "bio": "1 sentence who this person is professionally, based on available context",
-  "meetingPurpose": "1 sentence on likely purpose or agenda of this meeting based on title, description, and email context"
-}`;
-  const resp=await fetch('https://api.anthropic.com/v1/messages',{
+  return fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:prompt}]})
-  });
-  const d=await resp.json();
-  const txt=d.content?.[0]?.text||'{}';
-  try { return JSON.parse(txt.replace(/```json|```/g,'').trim()); }
-  catch(e){ return {}; }
+  }).then(function(r){return r.json();})
+    .then(function(d){
+      var txt=(d.content&&d.content[0]&&d.content[0].text)||'{}';
+      return JSON.parse(txt.replace(/```json|```/g,'').trim());
+    }).catch(function(){return {};});
 }
 
-// ── render helpers ────────────────────────────────────────────────────────────
-function avatarHtml(name,size=42) {
-  return `<div class="avatar" style="width:${size}px;height:${size}px">${initials(name)}</div>`;
+// ── render ────────────────────────────────────────────────────────────────────
+function avatarEl(att, size){
+  size = size||48;
+  var name = att.displayName||att.email||'?';
+  var photo = S.photoCache[att.email];
+  var isInt = isInternal(att);
+  var bg = isInt ? '#f0f0ef' : '#e8f2ed';
+  var fg = isInt ? '#888' : '#1a4730';
+  var html = '<div class="av'+(isInt?' int':'')+'" style="width:'+size+'px;height:'+size+'px;min-width:'+size+'px;background:'+bg+';color:'+fg+'">';
+  if(photo){
+    html += '<img src="'+esc(photo)+'" alt="'+esc(name)+'" onerror="this.parentNode.innerHTML=\''+initials(name)+'\'">';
+  } else {
+    html += initials(name);
+  }
+  html += '</div>';
+  return html;
 }
 
-function svgIcon(name) {
-  const icons={
-    email:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`,
-    calendar:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
-    purpose:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
-    action:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>`,
-    video:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><path d="M15 10l4.553-2.069A1 1 0 0121 8.869v6.262a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>`,
-    pin:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
-    users:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>`,
-    linkedin:`<svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>`,
-    clock:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-    chevron:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>`
-  };
-  return icons[name]||'';
-}
+function cardHtml(ev){
+  var ext=(ev.attendees||[]).filter(function(a){return !a.self&&!isInternal(a);});
+  var intl=(ev.attendees||[]).filter(function(a){return !a.self&&isInternal(a);});
+  var allInt=ext.length===0;
+  var virt=isVirtual(ev);
+  var loc=getLocLabel(ev);
+  var meetLink=getMeetLink(ev);
+  var dur=fmtDur(ev.start&&ev.start.dateTime, ev.end&&ev.end.dateTime);
+  var prep=hasPrep(ev);
+  var typeClass=allInt?'int':virt?'virt':'';
+  var now=new Date();
+  var endDt=ev.end&&ev.end.dateTime?new Date(ev.end.dateTime):null;
+  var isPast=endDt&&endDt<now;
 
-function cardHtml(ev) {
-  const ext=(ev.attendees||[]).filter(a=>!a.self&&!isInternal(a));
-  const intl=(ev.attendees||[]).filter(a=>!a.self&&isInternal(a));
-  const allInt=ext.length===0;
-  const virt=isVirtual(ev);
-  const urgent=isUrgent(ev);
-  const loc=getLocLabel(ev);
-  const meetLink=getMeetLink(ev);
-  const dur=fmtDur(ev.start?.dateTime,ev.end?.dateTime);
-  const prep=hasPrep(ev);
-  const collapsed=S.collapsed[ev.id]||false;
+  // ── Internal card ─────────────────────────────────────────────────────────
+  if(allInt){
+    var whoNames=(intl.length?intl:ev.attendees||[]).filter(function(a){return !a.self;});
+    var avatarsHtml=whoNames.slice(0,3).map(function(a){return avatarEl(a,40);}).join('');
+    var nameStr=whoNames.slice(0,2).map(function(a){return a.displayName||(a.email||'').split('@')[0];}).join(', ');
+    if(whoNames.length>2) nameStr+=' +'+( whoNames.length-2);
+    var actionHtml='';
+    if(virt&&meetLink) actionHtml='<button class="join-btn" onclick="window.open(\''+esc(meetLink)+'\',\'_blank\')" style="background:#888">Join</button>';
+    else if(loc) actionHtml='<span class="loc-pill">'+esc(loc)+'</span>';
+    if(dur) actionHtml+=(actionHtml?' ':'')+'<span class="dur">'+esc(dur)+'</span>';
 
-  const typeClass=allInt?'internal':urgent?'urgent':virt?'virtual':'inperson';
-
-  const modeBadge=virt
-    ? `<span class="badge bv">${svgIcon('video')} Virtual</span>`
-    : `<span class="badge bp">${svgIcon('pin')} In person</span>`;
-
-  const joinBtn=meetLink&&virt
-    ? `<a href="${esc(meetLink)}" target="_blank" rel="noopener" class="action-link join">${svgIcon('video')} Join</a>`
-    : '';
-
-  if(allInt) {
-    const who=intl.length?intl.map(a=>a.displayName||a.email).join(', '):'Internal meeting';
-    return `<div class="card internal" id="card-${esc(ev.id)}">
-      <button class="card-toggle" onclick="toggleCard('${esc(ev.id)}')" title="Toggle">${svgIcon('chevron')}</button>
-      <div class="card-top">
-        ${avatarHtml(ev.summary||'M')}
-        <div class="cb">
-          <div class="c-name">${esc(ev.summary||'Meeting')}</div>
-          <div class="c-role">${esc(who)}</div>
-          <div class="badges">
-            <span class="badge bi">${svgIcon('users')} IslamicFamily</span>
-            ${virt?modeBadge:(loc?modeBadge:'')}
-            ${dur?`<span class="dur">${dur}</span>`:''}
-            ${joinBtn}
-            <button class="prep-flag ${prep?'prep-yes':'prep-no'}" onclick="openPrepModal(${JSON.stringify(esc(ev.summary||'Meeting'))}, ${JSON.stringify(ev.description||'')})">${prep?'📋 Prep materials':'No agenda'}</button>
-          </div>
-          ${loc?`<div class="loc">${svgIcon('pin')} ${esc(loc)}</div>`:''}
-        </div>
-      </div>
-    </div>`;
+    return '<div class="card int'+(isPast?' past':'')+'">'
+      +'<div class="card-top">'
+      +'<div class="avatars">'+avatarsHtml+'</div>'
+      +'<div class="card-mid">'
+      +'<div class="card-people" style="font-size:13px;font-weight:600">'+esc(ev.summary||'Meeting')+'</div>'
+      +'<div class="card-meta"><span>'+esc(nameStr)+'</span><span class="sep">·</span><span>IslamicFamily</span></div>'
+      +'</div>'
+      +(actionHtml?'<div class="card-action">'+actionHtml+'</div>':'')
+      +'</div>'
+      +'</div>';
   }
 
-  // External meeting
-  let attendeesHtml='';
-  ext.forEach((att,i)=>{
-    const enr=i===0?S.enrichCache[att.email]:null;
-    const isEnr=i===0&&!!S.enriching[att.email];
-    const name=att.displayName||att.email;
-    const lastMet=enr?.lastMet||null;
-    const liQ=encodeURIComponent(`${name} site:linkedin.com/in`);
+  // ── External card ─────────────────────────────────────────────────────────
+  var enr=S.enrichCache[ext[0]&&ext[0].email]||null;
+  var isEnriching=!!(S.enriching[ext[0]&&ext[0].email]);
 
-    if(i>0) attendeesHtml+='<hr class="att-divider">';
-    attendeesHtml+=`<div class="card-top">
-      ${avatarHtml(name)}
-      <div class="cb">
-        <div class="c-name">${esc(name)}</div>
-        ${enr?.title?`<div class="c-role">${esc(enr.title)}</div>`:''}
-        ${enr?.org?`<div class="c-org">${esc(enr.org)}${enr.orgDesc?` — ${esc(enr.orgDesc)}`:''}</div>`:''}
-        ${enr?.bio&&!enr?.title?`<div class="c-bio">${esc(enr.bio)}</div>`:''}
-        ${lastMet?`<div class="last-met">${svgIcon('clock')} Last met ${esc(lastMet)}</div>`:''}
-        <div class="badges">
-          ${modeBadge}
-          ${dur?`<span class="dur">${dur}</span>`:''}
-          ${joinBtn}
-          <a href="https://www.google.com/search?q=${liQ}" target="_blank" rel="noopener" class="action-link">${svgIcon('linkedin')} LinkedIn</a>
-          ${isEnr?`<span class="enriching"><span class="dots"><span></span><span></span><span></span></span> gathering context…</span>`:''}
-        </div>
-        ${loc?`<div class="loc">${svgIcon('pin')} ${esc(loc)}</div>`:''}
-      </div>
-    </div>`;
-  });
+  // Avatars row (up to 3)
+  var avatarsHtml=ext.slice(0,3).map(function(a){return avatarEl(a,48);}).join('');
 
-  // Context boxes
-  const enr=S.enrichCache[ext[0]?.email];
-  let ctxBoxes='';
-  const boxes=[];
+  // People names + orgs
+  var peopleHtml=ext.slice(0,3).map(function(a,i){
+    var name=a.displayName||(a.email||'').split('@')[0];
+    var org='';
+    if(i===0&&enr&&enr.org) org=enr.org;
+    else {
+      var emailDomain=(a.email||'').split('@')[1]||'';
+      // Use domain as hint
+    }
+    return '<a href="'+liUrl(name, org)+'" target="_blank" rel="noopener">'+esc(name)+'</a>';
+  }).join('<span class="sep"> + </span>');
 
-  if(enr?.meetingPurpose) boxes.push(`<div class="ctx-box">
-    <div class="ctx-lbl">${svgIcon('purpose')} Meeting purpose</div>
-    <div class="ctx-txt">${esc(enr.meetingPurpose)}</div>
-  </div>`);
+  var orgs=ext.slice(0,3).map(function(a,i){
+    if(i===0&&enr&&enr.org) return enr.org;
+    return '';
+  }).filter(Boolean);
+  if(orgs.length) peopleHtml+='<span class="orgs">· '+esc(orgs.join(', '))+'</span>';
 
-  if(enr?.emailSummary) boxes.push(`<div class="ctx-box">
-    <div class="ctx-lbl">${svgIcon('email')} Recent email context</div>
-    <div class="ctx-txt">${esc(enr.emailSummary)}</div>
-    ${enr.emailDate?`<div class="ctx-sub">${esc(enr.emailDate)}</div>`:''}
-    ${enr.actionItems?`<div class="ctx-actions">↳ ${esc(enr.actionItems)}</div>`:''}
-  </div>`);
+  // Title + last met
+  var metaItems=[];
+  if(enr&&enr.title) metaItems.push('<span class="title">'+esc(enr.title)+'</span>');
+  if(enr&&enr.lastMet) metaItems.push('<span>'+esc(enr.lastMet)+'</span>');
+  else if(!enr&&!isEnriching) metaItems.push('');
+  var metaHtml=metaItems.length?'<div class="card-meta">'+metaItems.join('<span class="sep"> · </span>')+'</div>':'';
 
-  if(boxes.length===1) ctxBoxes=`<div class="ctx-grid single">${boxes[0]}</div>`;
-  else if(boxes.length===2) ctxBoxes=`<div class="ctx-grid">${boxes.join('')}</div>`;
+  // Action button
+  var actionHtml='';
+  if(virt&&meetLink) actionHtml='<button class="join-btn" onclick="window.open(\''+esc(meetLink)+'\',\'_blank\')">Join</button>';
+  else if(virt) actionHtml='<button class="join-btn" onclick="return false">Join</button>';
+  else if(loc) actionHtml='<span class="loc-pill">'+esc(loc)+'</span>';
+  if(dur) actionHtml=(actionHtml?actionHtml+'<br>':'')+' <span class="dur">'+esc(dur)+'</span>';
 
-  return `<div class="card ${typeClass}" id="card-${esc(ev.id)}">
-    <button class="card-toggle" onclick="toggleCard('${esc(ev.id)}')" title="Toggle">${svgIcon('chevron')}</button>
-    ${attendeesHtml}
-    <div class="card-body">
-      ${ev.summary?`<div class="c-event">${svgIcon('calendar')} ${esc(ev.summary)} <button class="prep-flag ${prep?'prep-yes':'prep-no'}" onclick="openPrepModal(${JSON.stringify(esc(ev.summary||'Meeting'))}, ${JSON.stringify(ev.description||'')})">${prep?'📋 Prep materials':'No agenda'}</button></div>`:`<div style="margin-top:6px"><button class="prep-flag ${prep?'prep-yes':'prep-no'}" onclick="openPrepModal(${JSON.stringify(esc(ev.summary||'Meeting'))}, ${JSON.stringify(ev.description||'')})">${prep?'📋 Prep materials':'No agenda'}</button></div>`}
-      ${ctxBoxes}
-    </div>
-  </div>`;
+  var topHtml='<div class="card-top">'
+    +'<div class="avatars">'+avatarsHtml+'</div>'
+    +'<div class="card-mid">'
+    +'<div class="card-people">'+peopleHtml+'</div>'
+    +metaHtml
+    +'</div>'
+    +(actionHtml?'<div class="card-action">'+actionHtml+'</div>':'')
+    +'</div>';
+
+  // Context block
+  var ctxHtml='';
+  if(isEnriching){
+    ctxHtml='<div class="card-ctx single"><div class="ctx-enriching">'
+      +'<span class="dots"><span></span><span></span><span></span></span> gathering context…</div></div>';
+  } else if(enr){
+    var boxes=[];
+    // Agenda / purpose box
+    var agendaContent='';
+    if(prep&&ev.description) {
+      agendaContent='<button onclick="openPrep('+JSON.stringify(esc(ev.summary||'Meeting'))+','+JSON.stringify(ev.description||'')+
+        ')" style="background:none;border:none;cursor:pointer;font-size:12.5px;color:var(--g);text-decoration:underline;padding:0;font-family:inherit">View agenda</button>';
+    } else if(enr.meetingPurpose){
+      agendaContent='<span>'+esc(enr.meetingPurpose)+'</span>';
+    }
+    if(agendaContent) boxes.push('<div class="ctx-box"><div class="ctx-lbl">Purpose</div><div class="ctx-txt">'+agendaContent+'</div></div>');
+
+    // Email box
+    if(enr.emailSummary){
+      var emailBox='<div class="ctx-box"><div class="ctx-lbl">Last email'+(enr.emailDate?' · '+esc(enr.emailDate):'')+'</div>'
+        +'<div class="ctx-txt">'+esc(enr.emailSummary)+'</div>'
+        +(enr.actionItems?'<div class="ctx-action">↳ '+esc(enr.actionItems)+'</div>':'')
+        +'</div>';
+      boxes.push(emailBox);
+    }
+
+    if(boxes.length){
+      var single=boxes.length===1;
+      ctxHtml='<div class="card-ctx'+(single?' single':'')+'">'+boxes.join('')+'</div>';
+    }
+  }
+
+  return '<div class="card '+typeClass+(isPast?' past':'')+'">'
+    +topHtml
+    +ctxHtml
+    +'</div>';
 }
 
-function buildTimeline(evs) {
+function buildTimeline(evs){
   if(!evs.length) return '<div class="empty">No meetings scheduled</div>';
 
-  const sorted=[...evs].sort((a,b)=>new Date(a.start?.dateTime)-new Date(b.start?.dateTime));
-  const now=new Date();
-  let html='<div class="timeline">';
+  var sorted=evs.slice().sort(function(a,b){
+    return new Date(a.start.dateTime)-new Date(b.start.dateTime);
+  });
 
   // Group by time
-  const groups=[];
-  sorted.forEach(ev=>{
-    const t=fmtTime(ev.start?.dateTime);
-    const last=groups[groups.length-1];
-    if(last&&last.time===t) last.evs.push(ev);
-    else groups.push({time:t,evs:[ev],startDt:new Date(ev.start?.dateTime),endDt:new Date(ev.end?.dateTime)});
+  var groups=[];
+  sorted.forEach(function(ev){
+    var t=fmtTime(ev.start.dateTime);
+    var last=groups[groups.length-1];
+    if(last&&last.time===t) { last.evs.push(ev); }
+    else groups.push({time:t, evs:[ev], startDt:new Date(ev.start.dateTime)});
+  });
+  groups.forEach(function(g){
+    g.endDt=g.evs.reduce(function(mx,e){
+      var d=new Date(e.end&&e.end.dateTime||e.start.dateTime);
+      return d>mx?d:mx;
+    }, g.startDt);
   });
 
-  // Update group endDt to max end
-  groups.forEach(g=>{
-    g.endDt=g.evs.reduce((mx,e)=>{const d=new Date(e.end?.dateTime);return d>mx?d:mx;},g.startDt);
-  });
+  var now=new Date();
+  var html='<div class="tl">';
+  var nowInserted=false;
 
-  groups.forEach((g,i)=>{
-    const isNow=now>=g.startDt&&now<g.endDt;
-    const isPast=now>g.endDt;
-    const allInt=g.evs.every(ev=>(ev.attendees||[]).filter(a=>!a.self&&!isInternal(a)).length===0);
-    const anyVirt=g.evs.some(isVirtual);
-    const dotClass=allInt?'internal':anyVirt?'virtual':'';
+  groups.forEach(function(g,i){
+    var allInt=g.evs.every(function(ev){
+      return (ev.attendees||[]).filter(function(a){return !a.self&&!isInternal(a);}).length===0;
+    });
+    var anyVirt=g.evs.some(isVirtual);
+    var dotClass=allInt?'int':anyVirt?'virt':'';
 
-    // Now line between groups
+    // Gap
     if(i>0){
-      const prev=groups[i-1];
-      const gapMins=Math.round((g.startDt-prev.endDt)/60000);
-      const gapLabel=fmtGap(gapMins);
-      if(gapLabel){
-        html+=`<div class="gap-indicator"><div class="gap-line"></div><span class="gap-label">${gapLabel}</span></div>`;
-      }
+      var prev=groups[i-1];
+      var gapMins=Math.round((g.startDt-prev.endDt)/60000);
+      var gapLabel=fmtGap(gapMins);
+      if(gapLabel) html+='<div class="gap-row"><div class="gap-line"></div><span class="gap-txt">'+gapLabel+'</span><div class="gap-line"></div></div>';
     }
 
-    // "Now" marker — insert before the next upcoming meeting
-    if(i===0&&now<g.startDt||(i>0&&now>=groups[i-1].endDt&&now<g.startDt)){
-      html+=`<div class="now-line"><div class="now-dot"></div><span class="now-label">NOW</span><div class="now-bar"></div></div>`;
+    // NOW marker — insert before next upcoming slot
+    if(!nowInserted && now<g.startDt){
+      var timeStr=now.toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit',hour12:true});
+      html+='<div class="now-row"><div class="now-dot"></div><span class="now-lbl">NOW · '+timeStr+'</span><div class="now-bar"></div></div>';
+      nowInserted=true;
     }
 
-    html+=`<div class="slot" style="${isPast?'opacity:.6':''}">
-      <div class="slot-time-label">${esc(g.time)}</div>
-      <div class="slot-time-dot ${dotClass}"></div>
-      <div class="slot-cards">${g.evs.map(cardHtml).join('')}</div>
-    </div>`;
+    html+='<div class="slot">'
+      +'<div class="slot-time">'+esc(g.time)+'</div>'
+      +'<div class="slot-dot '+dotClass+'"></div>'
+      +'<div class="slot-cards">'+g.evs.map(cardHtml).join('')+'</div>'
+      +'</div>';
   });
 
-  // Now marker if after all meetings
-  if(now>groups[groups.length-1]?.endDt){
-    html+=`<div class="now-line" style="padding-left:16px"><div class="now-dot"></div><span class="now-label">NOW</span><div class="now-bar"></div></div>`;
+  // NOW after all meetings
+  if(!nowInserted){
+    var timeStr=now.toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit',hour12:true});
+    html+='<div class="now-row" style="padding-left:14px"><div class="now-dot"></div><span class="now-lbl">NOW · '+timeStr+'</span><div class="now-bar"></div></div>';
   }
 
   html+='</div>';
   return html;
 }
 
-function dayHtml(label,evs,isToday) {
-  const d=new Date(); d.setDate(d.getDate()+(isToday?0:1));
-  const dateStr=d.toLocaleDateString('en-CA',{weekday:'long',month:'long',day:'numeric'});
-  return `<div class="day">
-    <div class="day-hdr">
-      <h2 class="${isToday?'day-label-today':'day-label-tmrw'}">${label}</h2>
-      <span class="day-pill">${dateStr}</span>
-      <div class="day-line"></div>
-      <div class="day-count">${evs.length} ${evs.length===1?'meeting':'meetings'}</div>
-    </div>
-    ${buildTimeline(evs)}
-  </div>`;
-}
-
-
-// ── prep modal ────────────────────────────────────────────────────────────────
-function openPrepModal(title, description) {
-  const raw = (description||'');
-  const escaped = raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const linked = escaped.replace(/(https?:\/\/[^\s<>"&]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
-  const paragraphs = linked.split(/\n\n+/);
-  const formatted = paragraphs.map(function(p){ return '<p>'+p.replace(/\n/g,'<br>')+'</p>'; }).join('');
-
-  const backdrop = document.createElement('div');
-  backdrop.className = 'modal-backdrop';
-  backdrop.id = 'prep-modal';
-  backdrop.innerHTML = '<div class="modal" role="dialog" aria-modal="true">'
-    + '<div class="modal-hdr">'
-    + '<div class="modal-title">'+title+'</div>'
-    + '<button class="modal-close" onclick="closePrepModal()" aria-label="Close">&times;</button>'
-    + '</div>'
-    + '<div class="modal-body">'+(formatted||'<p style="color:var(--mut);font-style:italic">No description added to this calendar event.</p>')+'</div>'
-    + '</div>';
-  backdrop.addEventListener('click', function(e){ if(e.target===backdrop) closePrepModal(); });
-  document.body.appendChild(backdrop);
-  document.addEventListener('keydown', escListener);
-}
-
-function closePrepModal() {
-  const el = document.getElementById('prep-modal');
-  if(el) el.remove();
-  document.removeEventListener('keydown', escListener);
-}
-
-function escListener(e) { if(e.key==='Escape') closePrepModal(); }
-
-// ── toggle collapse ───────────────────────────────────────────────────────────
-function toggleCard(id) {
-  S.collapsed[id]=!S.collapsed[id];
-  const el=document.getElementById('card-'+id);
-  if(!el) return;
-  el.classList.toggle('collapsed',S.collapsed[id]);
-}
-
-// ── main render ───────────────────────────────────────────────────────────────
-function render() {
-  const root=document.getElementById('root');
-  const {token,events,loading,error,lastLoaded,viewerEmail}=S;
-  const isOwner=viewerEmail&&viewerEmail.toLowerCase()===OWNER_CALENDAR.toLowerCase();
+function render(){
+  var root=document.getElementById('root');
+  var token=S.token, events=S.events, loading=S.loading, error=S.error, lastLoaded=S.lastLoaded, viewerEmail=S.viewerEmail;
+  var isOwner=viewerEmail&&viewerEmail.toLowerCase()===OWNER_CALENDAR.toLowerCase();
 
   if(!token){
-    root.innerHTML=`<div class="auth">
-      <div class="auth-logo"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="24" height="24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-      <h2>${esc(OWNER_NAME)}'s meeting brief</h2>
-      <p>Sign in with your Google account. If you have access to Omar's calendar, you'll see today and tomorrow's meetings with AI-enriched context.</p>
-      <button class="auth-btn" onclick="handleSignIn()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="18" height="18"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg>
-        Sign in with Google
-      </button>
-      ${CLIENT_ID==='YOUR_GOOGLE_CLIENT_ID_HERE'?'<div class="auth-note">⚠ Client ID not configured</div>':''}
-    </div>`;
+    root.innerHTML='<div class="auth">'
+      +'<div class="auth-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="22" height="22"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>'
+      +'<h2>'+esc(OWNER_NAME)+'\'s meeting brief</h2>'
+      +'<p>Sign in with your Google account to see today and tomorrow\'s meetings with AI-enriched context.</p>'
+      +'<button class="auth-btn" onclick="handleSignIn()">'
+      +'<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="16" height="16"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg>'
+      +'Sign in with Google</button>'
+      +(CLIENT_ID==='YOUR_GOOGLE_CLIENT_ID_HERE'?'<div class="auth-note">⚠ Client ID not configured</div>':'')
+      +'</div>';
     return;
   }
 
   if(loading&&!events){
-    root.innerHTML=`<div class="loading"><div class="spin"></div><p>Loading ${esc(OWNER_NAME)}'s calendar…</p></div>`;
+    root.innerHTML='<div class="loading"><div class="spin"></div><p>Loading calendar…</p></div>';
     return;
   }
 
-  const todayEvs=(events||[]).filter(e=>{const{start,end}=dayBounds(0);const d=new Date(e.start?.dateTime);return d>=start&&d<end;});
-  const tmrwEvs=(events||[]).filter(e=>{const{start,end}=dayBounds(1);const d=new Date(e.start?.dateTime);return d>=start&&d<end;});
-  const lastStr=lastLoaded?new Date(lastLoaded).toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit',hour12:true}):'';
+  var b0=dayBounds(0), b1=dayBounds(1), b2=dayBounds(2);
+  var todayEvs=(events||[]).filter(function(e){var d=new Date(e.start.dateTime);return d>=b0.start&&d<b1.start;});
+  var tmrwEvs=(events||[]).filter(function(e){var d=new Date(e.start.dateTime);return d>=b1.start&&d<b2.start;});
 
-  const viewerNotice=(!isOwner&&viewerEmail)
-    ?`<div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Viewing as <strong>${esc(viewerEmail)}</strong> — showing ${esc(OWNER_NAME)}'s calendar. Email context pulled from your inbox.</div>`
+  var lastStr=lastLoaded?new Date(lastLoaded).toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit',hour12:true}):'';
+  var viewerNotice=(!isOwner&&viewerEmail)
+    ?'<div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Viewing as '+esc(viewerEmail)+' — showing '+esc(OWNER_NAME)+'\'s calendar</div>'
     :'';
 
-  root.innerHTML=`
-    <div class="hdr">
-      <div>
-        <div class="hdr-title">Meeting brief</div>
-        <div class="hdr-sub">${esc(OWNER_NAME)} · IslamicFamily${lastStr?' · Updated '+lastStr:''}</div>
-      </div>
-      <div class="hdr-r">
-        <span class="date-pill">${nowStr()}</span>
-        <button class="btn-sm" onclick="doLoad(S.token)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
-          Refresh
-        </button>
-      </div>
-    </div>
-    ${error?`<div class="err">⚠ ${esc(error)}</div>`:''}
-    ${viewerNotice}
-    ${dayHtml('Today',todayEvs,true)}
-    ${dayHtml('Tomorrow',tmrwEvs,false)}
-  `;
+  var todayDate=new Date().toLocaleDateString('en-CA',{weekday:'short',month:'short',day:'numeric'});
+  var tmrwDate=new Date(Date.now()+86400000).toLocaleDateString('en-CA',{weekday:'short',month:'short',day:'numeric'});
+
+  root.innerHTML=
+    '<div class="hdr">'
+    +'<div><div class="hdr-title">Meeting brief</div>'
+    +'<div class="hdr-sub">'+esc(OWNER_NAME)+' · IslamicFamily'+(lastStr?' · Updated '+lastStr:'')+'</div></div>'
+    +'<div class="hdr-r">'
+    +'<span class="date-pill">'+nowStr()+'</span>'
+    +'<button class="btn-refresh" onclick="doLoad(S.token)">'
+    +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>'
+    +' Refresh</button>'
+    +'</div></div>'
+    +(error?'<div class="err">⚠ '+esc(error)+'</div>':'')
+    +viewerNotice
+    +'<div class="day">'
+    +'<div class="day-hdr"><h2 class="today">Today</h2><span class="day-date">'+esc(todayDate)+'</span><div class="day-line"></div><span class="day-count">'+todayEvs.length+' meeting'+(todayEvs.length!==1?'s':'')+'</span></div>'
+    +buildTimeline(todayEvs)
+    +'</div>'
+    +'<div class="day">'
+    +'<div class="day-hdr"><h2 class="tmrw">Tomorrow</h2><span class="day-date">'+esc(tmrwDate)+'</span><div class="day-line"></div><span class="day-count">'+tmrwEvs.length+' meeting'+(tmrwEvs.length!==1?'s':'')+'</span></div>'
+    +buildTimeline(tmrwEvs)
+    +'</div>';
 }
+
+// ── prep modal ────────────────────────────────────────────────────────────────
+function openPrep(title, description){
+  var raw=description||'';
+  var escaped=raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  var linked=escaped.replace(/(https?:\/\/[^\s<>"&]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+  var paras=linked.split(/\n\n+/);
+  var formatted=paras.map(function(p){return '<p>'+p.replace(/\n/g,'<br>')+'</p>';}).join('');
+
+  var back=document.createElement('div');
+  back.className='modal-back';
+  back.id='prep-modal';
+  back.innerHTML='<div class="modal">'
+    +'<div class="modal-hdr"><div class="modal-title">'+title+'</div>'
+    +'<button class="modal-close" onclick="closePrep()">&times;</button></div>'
+    +'<div class="modal-body">'+(formatted||'<p style="color:var(--mut);font-style:italic">No description on this event.</p>')+'</div>'
+    +'</div>';
+  back.addEventListener('click',function(e){if(e.target===back) closePrep();});
+  document.body.appendChild(back);
+  document.addEventListener('keydown',escClose);
+}
+function closePrep(){
+  var el=document.getElementById('prep-modal');
+  if(el) el.remove();
+  document.removeEventListener('keydown',escClose);
+}
+function escClose(e){if(e.key==='Escape') closePrep();}
 
 // ── data loading ──────────────────────────────────────────────────────────────
-async function doLoad(tok) {
+function doLoad(tok){
   S.loading=true; S.error=null; render();
-  try {
-    const [evs,email]=await Promise.all([fetchEvents(tok),fetchViewerEmail(tok)]);
-    S.events=evs; S.viewerEmail=email; S.lastLoaded=Date.now();
-    sessionStorage.setItem(CACHE_KEY,JSON.stringify({evs,email,date:new Date().toDateString()}));
-    render();
-    kickEnrichment(tok,evs);
-  } catch(e){
-    if(e.message&&(e.message.includes('401')||e.message.toLowerCase().includes('credential')||e.message.toLowerCase().includes('invalid authentication'))) {
-      // Token expired — clear and prompt re-login
-      sessionStorage.removeItem(TOK_KEY);
-      sessionStorage.removeItem(CACHE_KEY);
-      S.token=null; S.events=null; S.viewerEmail=null; S.loading=false;
-      render(); return;
-    }
-    S.error=e.message;
-  }
-  S.loading=false; render();
+  Promise.all([fetchEvents(tok), fetchViewerEmail(tok)])
+    .then(function(res){
+      S.events=res[0]; S.viewerEmail=res[1]; S.lastLoaded=Date.now();
+      sessionStorage.setItem(CACHE_KEY,JSON.stringify({evs:res[0],email:res[1],date:new Date().toDateString()}));
+      S.loading=false; render();
+      kickEnrichment(tok, res[0]);
+    })
+    .catch(function(e){
+      if(e.message&&e.message.indexOf('401')>-1){
+        sessionStorage.removeItem(TOK_KEY); sessionStorage.removeItem(CACHE_KEY);
+        S.token=null; S.events=null; S.viewerEmail=null; S.loading=false; render(); return;
+      }
+      S.error=e.message; S.loading=false; render();
+    });
 }
 
-function kickEnrichment(tok,evs) {
-  evs.forEach(ev=>{
-    const ext=(ev.attendees||[]).filter(a=>!a.self&&!isInternal(a));
+function kickEnrichment(tok, evs){
+  evs.forEach(function(ev){
+    var ext=(ev.attendees||[]).filter(function(a){return !a.self&&!isInternal(a);});
     if(!ext.length) return;
-    const att=ext[0], key=att.email;
+    var att=ext[0], key=att.email;
     if(S.enrichCache[key]||S.enriching[key]) return;
     S.enriching[key]=true; render();
+
     Promise.all([
-      fetchEmails(tok,att.email),
-      fetchPastMeetings(tok,att.email)
-    ]).then(([emails,lastMet])=>
-      enrichContact(att.displayName||att.email,att.email,ev.summary,ev.description,emails,lastMet)
-        .then(enr=>{ enr.lastMet=lastMet; return enr; })
-    ).then(enr=>{
+      fetchEmails(tok, att.email),
+      fetchPastMeetings(tok, att.email),
+      fetchContactPhoto(tok, att.email)
+    ]).then(function(res){
+      var emails=res[0], lastMet=res[1], photo=res[2];
+      if(photo) S.photoCache[att.email]=photo;
+      return enrichContact(att.displayName||att.email, att.email, ev.summary||'', ev.description||'', emails, lastMet)
+        .then(function(enr){ enr.lastMet=lastMet; return enr; });
+    }).then(function(enr){
       S.enrichCache[key]=enr; delete S.enriching[key]; render();
-    }).catch(()=>{ delete S.enriching[key]; render(); });
+    }).catch(function(){
+      delete S.enriching[key]; render();
+    });
   });
 }
 
 // ── OAuth ─────────────────────────────────────────────────────────────────────
-function handleSignIn() {
+function handleSignIn(){
   if(CLIENT_ID==='YOUR_GOOGLE_CLIENT_ID_HERE'){alert('Add your Google OAuth Client ID first.');return;}
   function go(){
-    const client=google.accounts.oauth2.initTokenClient({
-      client_id:CLIENT_ID,
-      scope:SCOPES,
-      callback:(resp)=>{
-        if(resp.error){S.error='Sign-in failed.';render();return;}
+    var client=google.accounts.oauth2.initTokenClient({
+      client_id:CLIENT_ID, scope:SCOPES,
+      callback:function(resp){
+        if(resp.error){S.error='Sign-in failed. Please try again.';render();return;}
         S.token=resp.access_token;
         sessionStorage.setItem(TOK_KEY,resp.access_token);
         doLoad(resp.access_token);
@@ -708,30 +737,36 @@ function handleSignIn() {
     });
     client.requestAccessToken();
   }
-  if(window.google?.accounts?.oauth2){go();return;}
-  const s=document.createElement('script');
+  if(window.google&&window.google.accounts&&window.google.accounts.oauth2){go();return;}
+  var s=document.createElement('script');
   s.src='https://accounts.google.com/gsi/client';
   s.onload=go;
+  s.onerror=function(){S.error='Failed to load Google sign-in. Check your connection.';render();};
   document.head.appendChild(s);
 }
 
 // ── init ──────────────────────────────────────────────────────────────────────
-const cached=sessionStorage.getItem(CACHE_KEY);
-if(cached){
-  try{
-    const{evs,email,date}=JSON.parse(cached);
-    if(date===new Date().toDateString()){S.events=evs;S.viewerEmail=email;S.lastLoaded=Date.now();}
-  }catch(e){}
-}
+try {
+  var cached=sessionStorage.getItem(CACHE_KEY);
+  if(cached){
+    var c=JSON.parse(cached);
+    if(c.date===new Date().toDateString()){
+      S.events=c.evs; S.viewerEmail=c.email||null; S.lastLoaded=Date.now();
+    }
+  }
+} catch(e){}
+
 if(S.token&&!S.events) doLoad(S.token);
 else render();
 
-setInterval(()=>{
+setInterval(function(){
   if(S.token){
-    const c=sessionStorage.getItem(CACHE_KEY);
-    if(!c||JSON.parse(c).date!==new Date().toDateString()) doLoad(S.token);
+    try {
+      var c=sessionStorage.getItem(CACHE_KEY);
+      if(!c||JSON.parse(c).date!==new Date().toDateString()) doLoad(S.token);
+    } catch(e){}
   }
-},5*60*1000);
+}, 5*60*1000);
 </script>
 </body>
 </html>
