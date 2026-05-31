@@ -288,26 +288,6 @@ function fetchViewerEmail(tok){
     .catch(function(){return null;});
 }
 
-function fetchApolloData(email){
-  return fetch(PROXY_URL+'/apollo', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({email: email})
-  }).then(function(r){ return r.json(); })
-  .then(function(d){
-    console.log('[Apollo response]', JSON.stringify(d).slice(0,300));
-    var p = d.person;
-    if(!p) return null;
-    return {
-      photo:    p.photo || null,
-      title:    p.title || '',
-      org:      p.org || '',
-      orgDesc:  p.orgDesc || '',
-      linkedin: p.linkedin || null,
-      city:     p.city || ''
-    };
-  }).catch(function(e){ console.warn('[Apollo error]', e); return null; });
-}
 
 function fetchContactPhoto(tok, email){
   // Apollo handles photos now — this just falls back to Google Contacts
@@ -379,42 +359,22 @@ function fetchEmails(tok, email){
 }
 
 function enrichContact(name, email, meetingTitle, meetingDesc, emails, lastMet, apollo){
-  var ctx=emails.slice(0,3).map(function(e){
-    return 'Subject: '+e.subject+'\nDate: '+e.date+'\nSnippet: '+e.snippet;
-  }).join('\n---\n');
-  var apolloCtx='';
-  if(apollo){
-    if(apollo.title) apolloCtx+='Title: '+apollo.title+'\n';
-    if(apollo.org) apolloCtx+='Organization: '+apollo.org+'\n';
-    if(apollo.orgDesc) apolloCtx+='Org description: '+apollo.orgDesc+'\n';
-  }
-
-  var prompt = OWNER_NAME+' (Executive Director, IslamicFamily Edmonton) is meeting '
-    +name+' ('+email+').\nMeeting: "'+meetingTitle+'"\n'
-    +(meetingDesc?'Description: '+meetingDesc.slice(0,300)+'\n':'')
-    +(lastMet?'Last met: '+lastMet+'\n':'')
-    +(apolloCtx?'\nKnown from Apollo:\n'+apolloCtx:'')
-    +'\nRecent emails:\n'+(ctx||'None.')+'\n\n'
-    +'Reply ONLY with valid JSON, no markdown, no backticks:\n'
-    +'{"title":"use Apollo title if provided, else infer from emails, else empty",'
-    +'"org":"use Apollo org if provided, else infer, else empty",'
-    +'"orgDesc":"one short phrase what their org does, else empty",'
-    +'"emailSummary":"1-2 sentences most relevant email context for this meeting, or empty",'
-    +'"emailDate":"most recent email date readable, or empty",'
-    +'"actionItems":"specific open ask or commitment from emails relevant to this meeting, or empty",'
-    +'"meetingPurpose":"1 sentence likely purpose of this meeting based on title, description and emails"}';
-
-  return fetch(PROXY_URL+'/enrich',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({messages:[{role:'user',content:prompt}]})
-  }).then(function(r){return r.json();})
-    .then(function(d){
-      var txt=(d.content&&d.content[0]&&d.content[0].text)||'{}';
-      console.log('[Enrich raw]', txt.slice(0,200));
-      try { return JSON.parse(txt.replace(/```json|```/g,'').trim()); }
-      catch(e){ console.warn('[Enrich parse error]', e, txt); return {}; }
-    }).catch(function(e){ console.warn('[Enrich fetch error]', e); return {};});
+  return fetch(PROXY_URL+'/enrich', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      name: name,
+      email: email,
+      meetingTitle: meetingTitle,
+      meetingDesc: (meetingDesc||'').slice(0,300),
+      emails: (emails||[]).slice(0,3),
+      lastMet: lastMet||''
+    })
+  }).then(function(r){ return r.json(); })
+  .then(function(d){
+    console.log('[Enrich]', name, d);
+    return (d && d.data) ? d.data : {};
+  }).catch(function(e){ console.warn('[Enrich error]', e); return {}; });
 }
 
 // ── render ────────────────────────────────────────────────────────────────────
@@ -762,20 +722,18 @@ function kickEnrichment(tok, evs){
     Promise.all([
       fetchEmails(tok, att.email),
       fetchPastMeetings(tok, att.email),
-      fetchContactPhoto(tok, att.email),
-      fetchApolloData(att.email)
+      fetchContactPhoto(tok, att.email)
     ]).then(function(res){
-      var emails=res[0], lastMet=res[1], photo=res[2], apollo=res[3];
-      // Apollo photo takes priority over Google Contacts
-      if(apollo && apollo.photo) S.photoCache[att.email]=apollo.photo;
-      else if(photo) S.photoCache[att.email]=photo;
-      return enrichContact(att.displayName||att.email, att.email, ev.summary||'', ev.description||'', emails, lastMet, apollo)
+      var emails=res[0], lastMet=res[1], photo=res[2], apollo=null;
+      if(photo) S.photoCache[att.email]=photo;
+      return enrichContact(att.displayName||att.email, att.email, ev.summary||'', ev.description||'', emails, lastMet, null)
         .then(function(enr){
           enr.lastMet=lastMet;
-          if(apollo&&apollo.linkedin) enr.linkedinUrl=apollo.linkedin;
           return enr;
         });
     }).then(function(enr){
+      // Use photo from web enrichment if no Google Contacts photo
+      if(enr.photo && !S.photoCache[key]) S.photoCache[key]=enr.photo;
       S.enrichCache[key]=enr; delete S.enriching[key]; render();
     }).catch(function(){
       delete S.enriching[key]; render();
