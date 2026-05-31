@@ -164,7 +164,7 @@ window.onerror = function(msg,src,line){
 const CLIENT_ID      = '81359003976-peulai0h863528iu5htb3sc7tknsamtc.apps.googleusercontent.com';
 const OWNER_CALENDAR = 'omar@islamicfamily.ca';
 const OWNER_NAME     = 'Omar Yaqub';
-const APOLLO_KEY     = 'S0NSJ83tM4ivg8qLK4Hi0g';
+const PROXY_URL      = 'https://polished-flower-fe44.admin786.workers.dev';
 // ───────────────────────────────────────────────────────────────────────────
 
 const SCOPES = [
@@ -289,30 +289,21 @@ function fetchViewerEmail(tok){
 }
 
 function fetchApolloData(email){
-  // Apollo.io person match — returns photo, title, org, linkedin URL
-  if(!APOLLO_KEY) return Promise.resolve(null);
-  return fetch('https://api.apollo.io/v1/people/match', {
+  return fetch(PROXY_URL+'/apollo', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache'
-    },
-    body: JSON.stringify({
-      api_key: APOLLO_KEY,
-      email: email,
-      reveal_personal_emails: false
-    })
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({email: email})
   }).then(function(r){ return r.json(); })
   .then(function(d){
     var p = d.person;
     if(!p) return null;
     return {
-      photo:     p.photo_url || null,
-      title:     p.title || '',
-      org:       (p.organization && p.organization.name) || '',
-      orgDesc:   (p.organization && p.organization.short_description) || '',
-      linkedin:  p.linkedin_url || null,
-      city:      p.city || ''
+      photo:    p.photo || null,
+      title:    p.title || '',
+      org:      p.org || '',
+      orgDesc:  p.orgDesc || '',
+      linkedin: p.linkedin || null,
+      city:     p.city || ''
     };
   }).catch(function(){ return null; });
 }
@@ -412,10 +403,10 @@ function enrichContact(name, email, meetingTitle, meetingDesc, emails, lastMet, 
     +'"actionItems":"specific open ask or commitment from emails relevant to this meeting, or empty",'
     +'"meetingPurpose":"1 sentence likely purpose of this meeting based on title, description and emails"}';
 
-  return fetch('https://api.anthropic.com/v1/messages',{
+  return fetch(PROXY_URL+'/enrich',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:prompt}]})
+    body:JSON.stringify({messages:[{role:'user',content:prompt}]})
   }).then(function(r){return r.json();})
     .then(function(d){
       var txt=(d.content&&d.content[0]&&d.content[0].text)||'{}';
