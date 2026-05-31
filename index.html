@@ -295,6 +295,7 @@ function fetchApolloData(email){
     body: JSON.stringify({email: email})
   }).then(function(r){ return r.json(); })
   .then(function(d){
+    console.log('[Apollo response]', JSON.stringify(d).slice(0,300));
     var p = d.person;
     if(!p) return null;
     return {
@@ -305,7 +306,7 @@ function fetchApolloData(email){
       linkedin: p.linkedin || null,
       city:     p.city || ''
     };
-  }).catch(function(){ return null; });
+  }).catch(function(e){ console.warn('[Apollo error]', e); return null; });
 }
 
 function fetchContactPhoto(tok, email){
@@ -410,8 +411,10 @@ function enrichContact(name, email, meetingTitle, meetingDesc, emails, lastMet, 
   }).then(function(r){return r.json();})
     .then(function(d){
       var txt=(d.content&&d.content[0]&&d.content[0].text)||'{}';
-      return JSON.parse(txt.replace(/```json|```/g,'').trim());
-    }).catch(function(){return {};});
+      console.log('[Enrich raw]', txt.slice(0,200));
+      try { return JSON.parse(txt.replace(/```json|```/g,'').trim()); }
+      catch(e){ console.warn('[Enrich parse error]', e, txt); return {}; }
+    }).catch(function(e){ console.warn('[Enrich fetch error]', e); return {};});
 }
 
 // ── render ────────────────────────────────────────────────────────────────────
@@ -741,12 +744,20 @@ function doLoad(tok){
 }
 
 function kickEnrichment(tok, evs){
+  var queue=[];
   evs.forEach(function(ev){
     var ext=(ev.attendees||[]).filter(function(a){return !a.self&&!isInternal(a);});
     if(!ext.length) return;
     var att=ext[0], key=att.email;
     if(S.enrichCache[key]||S.enriching[key]) return;
-    S.enriching[key]=true; render();
+    S.enriching[key]=true;
+    queue.push({ev:ev,att:att,key:key});
+  });
+  render();
+  // Stagger requests 1s apart to avoid rate limits
+  queue.forEach(function(item, i){
+    setTimeout(function(){
+      var ev=item.ev, att=item.att, key=item.key;
 
     Promise.all([
       fetchEmails(tok, att.email),
@@ -769,6 +780,7 @@ function kickEnrichment(tok, evs){
     }).catch(function(){
       delete S.enriching[key]; render();
     });
+    }, i * 1000); // stagger by 1s per contact
   });
 }
 
