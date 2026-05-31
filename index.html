@@ -164,6 +164,7 @@ window.onerror = function(msg,src,line){
 const CLIENT_ID      = '81359003976-peulai0h863528iu5htb3sc7tknsamtc.apps.googleusercontent.com';
 const OWNER_CALENDAR = 'omar@islamicfamily.ca';
 const OWNER_NAME     = 'Omar Yaqub';
+const APOLLO_KEY     = 'S0NSJ83tM4ivg8qLK4Hi0g';
 // ───────────────────────────────────────────────────────────────────────────
 
 const SCOPES = [
@@ -172,6 +173,9 @@ const SCOPES = [
   'https://www.googleapis.com/auth/contacts.readonly',
   'openid','email'
 ].join(' ');
+
+// Note: directory scope only works for Google Workspace admins
+// Photos come from contacts list (people/me/connections) for most users
 
 const IF_DOMAINS = ['islamicfamily.ca','flourishing.systems'];
 const IF_KW      = ['islamicfamily','islamic family','flourishing systems'];
@@ -284,29 +288,53 @@ function fetchViewerEmail(tok){
     .catch(function(){return null;});
 }
 
+function fetchApolloData(email){
+  // Apollo.io person match — returns photo, title, org, linkedin URL
+  if(!APOLLO_KEY) return Promise.resolve(null);
+  return fetch('https://api.apollo.io/v1/people/match', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    },
+    body: JSON.stringify({
+      api_key: APOLLO_KEY,
+      email: email,
+      reveal_personal_emails: false
+    })
+  }).then(function(r){ return r.json(); })
+  .then(function(d){
+    var p = d.person;
+    if(!p) return null;
+    return {
+      photo:     p.photo_url || null,
+      title:     p.title || '',
+      org:       (p.organization && p.organization.name) || '',
+      orgDesc:   (p.organization && p.organization.short_description) || '',
+      linkedin:  p.linkedin_url || null,
+      city:      p.city || ''
+    };
+  }).catch(function(){ return null; });
+}
+
 function fetchContactPhoto(tok, email){
-  // Google People API — search contacts by email
-  var url='https://people.googleapis.com/v1/people:searchContacts'
-    +'?query='+encodeURIComponent(email)
-    +'&readMask=photos,names,emailAddresses,organizations,phoneNumbers'
-    +'&sources=READ_SOURCE_TYPE_CONTACT';
-  return apiFetch(tok, url).then(function(d){
-    var results=d.results||[];
-    for(var i=0;i<results.length;i++){
-      var p=results[i].person||{};
-      // Match on email
-      var emails=p.emailAddresses||[];
-      var match=emails.some(function(ea){
-        return (ea.value||'').toLowerCase()===(email||'').toLowerCase();
+  // Apollo handles photos now — this just falls back to Google Contacts
+  var contactUrl='https://people.googleapis.com/v1/people/me/connections'
+    +'?personFields=photos,emailAddresses&pageSize=500';
+  return apiFetch(tok, contactUrl).then(function(d){
+    var conns=d.connections||[];
+    var match=conns.find(function(p){
+      return (p.emailAddresses||[]).some(function(ea){
+        return (ea.value||'').toLowerCase()===email.toLowerCase();
       });
-      if(match){
-        var photos=p.photos||[];
-        var photo=photos.find(function(ph){return !ph.default;});
-        return photo?photo.url:null;
-      }
+    });
+    if(match){
+      var photos=match.photos||[];
+      var photo=photos.find(function(ph){return !ph.default;});
+      if(photo) return photo.url;
     }
     return null;
-  }).catch(function(){return null;});
+  }).catch(function(){ return null; });
 }
 
 function fetchPastMeetings(tok, email){
@@ -358,24 +386,31 @@ function fetchEmails(tok, email){
     }).catch(function(){return [];});
 }
 
-function enrichContact(name, email, meetingTitle, meetingDesc, emails, lastMet){
+function enrichContact(name, email, meetingTitle, meetingDesc, emails, lastMet, apollo){
   var ctx=emails.slice(0,3).map(function(e){
     return 'Subject: '+e.subject+'\nDate: '+e.date+'\nSnippet: '+e.snippet;
   }).join('\n---\n');
+  var apolloCtx='';
+  if(apollo){
+    if(apollo.title) apolloCtx+='Title: '+apollo.title+'\n';
+    if(apollo.org) apolloCtx+='Organization: '+apollo.org+'\n';
+    if(apollo.orgDesc) apolloCtx+='Org description: '+apollo.orgDesc+'\n';
+  }
 
   var prompt = OWNER_NAME+' (Executive Director, IslamicFamily Edmonton) is meeting '
     +name+' ('+email+').\nMeeting: "'+meetingTitle+'"\n'
     +(meetingDesc?'Description: '+meetingDesc.slice(0,300)+'\n':'')
     +(lastMet?'Last met: '+lastMet+'\n':'')
+    +(apolloCtx?'\nKnown from Apollo:\n'+apolloCtx:'')
     +'\nRecent emails:\n'+(ctx||'None.')+'\n\n'
     +'Reply ONLY with valid JSON, no markdown, no backticks:\n'
-    +'{"title":"job title if inferable from signature or context, else empty",'
-    +'"org":"organization name if inferable, else empty",'
+    +'{"title":"use Apollo title if provided, else infer from emails, else empty",'
+    +'"org":"use Apollo org if provided, else infer, else empty",'
     +'"orgDesc":"one short phrase what their org does, else empty",'
     +'"emailSummary":"1-2 sentences most relevant email context for this meeting, or empty",'
     +'"emailDate":"most recent email date readable, or empty",'
     +'"actionItems":"specific open ask or commitment from emails relevant to this meeting, or empty",'
-    +'"meetingPurpose":"1 sentence likely purpose of this meeting based on title description and emails"}';
+    +'"meetingPurpose":"1 sentence likely purpose of this meeting based on title, description and emails"}';
 
   return fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
@@ -398,7 +433,7 @@ function avatarEl(att, size){
   var fg = isInt ? '#888' : '#1a4730';
   var html = '<div class="av'+(isInt?' int':'')+'" style="width:'+size+'px;height:'+size+'px;min-width:'+size+'px;background:'+bg+';color:'+fg+'">';
   if(photo){
-    html += '<img src="'+esc(photo)+'" alt="'+esc(name)+'" onerror="this.parentNode.innerHTML=\''+initials(name)+'\'">';
+    html += '<img src="'+esc(photo)+'" alt="'+esc(name)+'" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML=\''+initials(name)+'\'">';
   } else {
     html += initials(name);
   }
@@ -424,7 +459,12 @@ function cardHtml(ev){
   if(allInt){
     var whoNames=(intl.length?intl:ev.attendees||[]).filter(function(a){return !a.self;});
     var avatarsHtml=whoNames.slice(0,3).map(function(a){return avatarEl(a,40);}).join('');
-    var nameStr=whoNames.slice(0,2).map(function(a){return a.displayName||(a.email||'').split('@')[0];}).join(', ');
+    function cleanIntName(a){
+    if(a.displayName) return a.displayName;
+    var prefix=(a.email||'').split('@')[0]||'?';
+    return prefix.replace(/[._-]+/g,' ').replace(/\w/g,function(c){return c.toUpperCase();});
+  }
+  var nameStr=whoNames.slice(0,2).map(function(a){return cleanIntName(a);}).join(', ');
     if(whoNames.length>2) nameStr+=' +'+( whoNames.length-2);
     var actionHtml='';
     if(virt&&meetLink) actionHtml='<button class="join-btn" onclick="window.open(\''+esc(meetLink)+'\',\'_blank\')" style="background:#888">Join</button>';
@@ -451,15 +491,20 @@ function cardHtml(ev){
   var avatarsHtml=ext.slice(0,3).map(function(a){return avatarEl(a,48);}).join('');
 
   // People names + orgs
+  function cleanName(a, idx){
+    if(a.displayName) return a.displayName;
+    // Turn email prefix into readable name: john.doe -> John Doe
+    var prefix=(a.email||'').split('@')[0]||'?';
+    return prefix.replace(/[._-]+/g,' ').replace(/\w/g,function(c){return c.toUpperCase();});
+  }
+
   var peopleHtml=ext.slice(0,3).map(function(a,i){
-    var name=a.displayName||(a.email||'').split('@')[0];
-    var org='';
-    if(i===0&&enr&&enr.org) org=enr.org;
-    else {
-      var emailDomain=(a.email||'').split('@')[1]||'';
-      // Use domain as hint
-    }
-    return '<a href="'+liUrl(name, org)+'" target="_blank" rel="noopener">'+esc(name)+'</a>';
+    var name=cleanName(a,i);
+    var org=(i===0&&enr&&enr.org)?enr.org:'';
+    // Use real LinkedIn URL from Apollo if available, else search
+    var apolloD=(i===0)?S.enrichCache[a.email]:null;
+    var href=(apolloD&&apolloD.linkedinUrl)?apolloD.linkedinUrl:liUrl(name,org);
+    return '<a href="'+esc(href)+'" target="_blank" rel="noopener">'+esc(name)+'</a>';
   }).join('<span class="sep"> + </span>');
 
   var orgs=ext.slice(0,3).map(function(a,i){
@@ -472,7 +517,6 @@ function cardHtml(ev){
   var metaItems=[];
   if(enr&&enr.title) metaItems.push('<span class="title">'+esc(enr.title)+'</span>');
   if(enr&&enr.lastMet) metaItems.push('<span>'+esc(enr.lastMet)+'</span>');
-  else if(!enr&&!isEnriching) metaItems.push('');
   var metaHtml=metaItems.length?'<div class="card-meta">'+metaItems.join('<span class="sep"> · </span>')+'</div>':'';
 
   // Action button
@@ -501,8 +545,10 @@ function cardHtml(ev){
     // Agenda / purpose box
     var agendaContent='';
     if(prep&&ev.description) {
-      agendaContent='<button onclick="openPrep('+JSON.stringify(esc(ev.summary||'Meeting'))+','+JSON.stringify(ev.description||'')+
-        ')" style="background:none;border:none;cursor:pointer;font-size:12.5px;color:var(--g);text-decoration:underline;padding:0;font-family:inherit">View agenda</button>';
+      var prepId='prep-'+ev.id.replace(/[^a-zA-Z0-9]/g,'');
+      S.prepStore=S.prepStore||{};
+      S.prepStore[prepId]={title:ev.summary||'Meeting',desc:ev.description};
+      agendaContent='<button class="prep-open" data-id="'+prepId+'" style="background:none;border:none;cursor:pointer;font-size:12.5px;color:var(--g);text-decoration:underline;padding:0;font-family:inherit">View agenda</button>';
     } else if(enr.meetingPurpose){
       agendaContent='<span>'+esc(enr.meetingPurpose)+'</span>';
     }
@@ -584,8 +630,8 @@ function buildTimeline(evs){
       +'</div>';
   });
 
-  // NOW after all meetings
-  if(!nowInserted){
+  // NOW after all meetings — only if we haven't inserted it and today hasn't ended
+  if(!nowInserted && now<groups[groups.length-1].endDt){
     var timeStr=now.toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit',hour12:true});
     html+='<div class="now-row" style="padding-left:14px"><div class="now-dot"></div><span class="now-lbl">NOW · '+timeStr+'</span><div class="now-bar"></div></div>';
   }
@@ -652,8 +698,14 @@ function render(){
 }
 
 // ── prep modal ────────────────────────────────────────────────────────────────
-function openPrep(title, description){
-  var raw=description||'';
+function openPrep(idOrTitle, description){
+  var title, raw;
+  if(S.prepStore&&S.prepStore[idOrTitle]){
+    title=S.prepStore[idOrTitle].title;
+    raw=S.prepStore[idOrTitle].desc||'';
+  } else {
+    title=idOrTitle; raw=description||'';
+  }
   var escaped=raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   var linked=escaped.replace(/(https?:\/\/[^\s<>"&]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
   var paras=linked.split(/\n\n+/);
@@ -708,12 +760,19 @@ function kickEnrichment(tok, evs){
     Promise.all([
       fetchEmails(tok, att.email),
       fetchPastMeetings(tok, att.email),
-      fetchContactPhoto(tok, att.email)
+      fetchContactPhoto(tok, att.email),
+      fetchApolloData(att.email)
     ]).then(function(res){
-      var emails=res[0], lastMet=res[1], photo=res[2];
-      if(photo) S.photoCache[att.email]=photo;
-      return enrichContact(att.displayName||att.email, att.email, ev.summary||'', ev.description||'', emails, lastMet)
-        .then(function(enr){ enr.lastMet=lastMet; return enr; });
+      var emails=res[0], lastMet=res[1], photo=res[2], apollo=res[3];
+      // Apollo photo takes priority over Google Contacts
+      if(apollo && apollo.photo) S.photoCache[att.email]=apollo.photo;
+      else if(photo) S.photoCache[att.email]=photo;
+      return enrichContact(att.displayName||att.email, att.email, ev.summary||'', ev.description||'', emails, lastMet, apollo)
+        .then(function(enr){
+          enr.lastMet=lastMet;
+          if(apollo&&apollo.linkedin) enr.linkedinUrl=apollo.linkedin;
+          return enr;
+        });
     }).then(function(enr){
       S.enrichCache[key]=enr; delete S.enriching[key]; render();
     }).catch(function(){
@@ -744,6 +803,16 @@ function handleSignIn(){
   s.onerror=function(){S.error='Failed to load Google sign-in. Check your connection.';render();};
   document.head.appendChild(s);
 }
+
+// ── prep click handler (event delegation) ────────────────────────────────────
+document.addEventListener('click', function(e){
+  var btn = e.target.closest('.prep-open');
+  if(!btn) return;
+  var id = btn.getAttribute('data-id');
+  if(id && S.prepStore && S.prepStore[id]){
+    openPrep(id);
+  }
+});
 
 // ── init ──────────────────────────────────────────────────────────────────────
 try {
