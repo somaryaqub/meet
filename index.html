@@ -3,800 +3,380 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Omar's Meeting Brief</title>
+<title>People & Purpose · June 5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --g:#275D43;--gl:#e8f2ed;--gm:#3a7a5a;
-  --br:#E09964;--brl:#faf3ec;
-  --red:#BB2D37;--redl:#fff5f5;
-  --blk:#353535;--mist:#FAFAF2;
-  --bdr:rgba(39,93,67,0.13);--bdr2:rgba(39,93,67,0.25);
-  --mut:rgba(53,53,53,0.52);
+:root {
+  --ink: #1c1c1a;
+  --ink-muted: #6b6b62;
+  --ink-faint: #a8a79e;
+  --paper: #f8f7f2;
+  --paper-warm: #f1efe8;
+  --card: #ffffff;
+  --forest: #2b4a2e;
+  --forest-pale: #e6ede7;
+  --forest-mid: #4a7c4f;
+  --gold: #b5781e;
+  --gold-pale: #fdf4e5;
+  --border: rgba(28,28,26,0.08);
+  --border-mid: rgba(28,28,26,0.14);
+  --r: 13px;
 }
-body{font-family:'Alegreya Sans',sans-serif;background:var(--mist);color:var(--blk);min-height:100vh}
-.app{max-width:800px;margin:0 auto;padding:2.25rem 1.5rem 5rem}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
-/* header */
-.hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:10px}
-.hdr-title{font-size:1.75rem;font-weight:700;color:var(--blk);line-height:1.1;letter-spacing:-.01em}
-.hdr-sub{font-size:12px;color:var(--mut);margin-top:4px}
-.hdr-r{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.date-pill{background:var(--g);color:#fff;font-size:11px;font-weight:500;padding:4px 12px;border-radius:20px;letter-spacing:.04em}
-.btn-refresh{background:none;border:.5px solid var(--bdr2);color:var(--g);font-family:'Alegreya Sans',sans-serif;font-size:11px;padding:4px 11px;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
-.btn-refresh:hover{background:var(--gl)}
 
-/* auth */
-.auth{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center}
-.auth-icon{width:48px;height:48px;background:var(--g);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem}
-.auth h2{font-size:1.6rem;font-weight:700;margin-bottom:.5rem}
-.auth p{font-size:13px;color:var(--mut);max-width:320px;line-height:1.65;margin:0 auto 1.5rem}
-.auth-btn{background:var(--g);color:#fff;border:none;font-family:'Alegreya Sans',sans-serif;font-size:14px;font-weight:500;padding:10px 24px;border-radius:40px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
-.auth-btn:hover{background:var(--gm)}
-.auth-note{font-size:11px;color:var(--mut);margin-top:10px}
+/* ─── TABS ─── */
+.tabs { background: var(--paper-warm); border-bottom: 1px solid var(--border-mid); display: flex; }
+.tab { flex: 1; padding: 0.9rem 1.5rem; font-size: 13px; font-weight: 500; color: var(--ink-muted); border: none; background: transparent; cursor: pointer; border-bottom: 2.5px solid transparent; transition: all 0.13s; font-family: 'DM Sans', sans-serif; text-align: center; }
+.tab.on { color: var(--forest); border-bottom-color: var(--forest); background: var(--paper); }
+.tab:hover:not(.on) { background: rgba(0,0,0,0.025); }
 
-/* loading */
-.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:45vh;gap:.75rem}
-.spin{width:26px;height:26px;border:2px solid var(--bdr2);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading p{font-size:13px;color:var(--mut)}
+/* ─── MAIN ─── */
+.main { max-width: 940px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+.day { display: none; }
+.day.on { display: block; }
 
-/* alerts */
-.err{background:var(--redl);border:.5px solid rgba(187,45,55,.2);border-radius:8px;padding:9px 13px;font-size:13px;color:var(--red);margin-bottom:1rem}
-.notice{background:var(--gl);border:.5px solid rgba(39,93,67,.18);border-radius:8px;padding:9px 13px;font-size:12px;color:#1a4730;margin-bottom:1rem;display:flex;align-items:center;gap:6px}
+/* ─── SUMMARY CHIP ─── */
+.chip { background: var(--forest-pale); border: 1px solid rgba(43,74,46,0.13); border-radius: 10px; padding: 1rem 1.25rem; color: var(--forest); margin-bottom: 2rem; line-height: 1.5; }
+.chip-summary { font-size: 13.5px; margin-bottom: 0.85rem; }
+.chip-stats { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.stat { display: inline-flex; align-items: center; gap: 5px; background: rgba(43,74,46,0.08); border: 1px solid rgba(43,74,46,0.12); border-radius: 7px; padding: 4px 10px; font-size: 12px; color: var(--forest); white-space: nowrap; }
+.stat strong { font-weight: 600; }
+.stat-icon { font-size: 12px; line-height: 1; }
+.offsite-sub { font-size: 11px; opacity: 0.7; margin-left: 2px; }
+.stat-divider { width: 1px; height: 16px; background: rgba(43,74,46,0.15); margin: 0 1px; }
+.weather-stat { display: inline-flex; align-items: center; gap: 6px; background: rgba(43,74,46,0.08); border: 1px solid rgba(43,74,46,0.12); border-radius: 7px; padding: 4px 10px; font-size: 12px; color: var(--forest); white-space: nowrap; }
+.weather-icon { font-size: 13px; }
+.weather-cond { opacity: 0.65; font-size: 11.5px; }
 
-/* day */
-.day{margin-bottom:2.25rem}
-.day-hdr{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
-.day-hdr h2{font-size:12px;font-weight:700;white-space:nowrap;letter-spacing:.05em;text-transform:uppercase}
-.day-hdr h2.today{color:var(--g)}
-.day-hdr h2.tmrw{color:var(--blk);opacity:.55}
-.day-date{font-size:11px;color:var(--mut);white-space:nowrap}
-.day-line{flex:1;height:.5px;background:var(--bdr2)}
-.day-count{font-size:11px;color:var(--mut);white-space:nowrap}
+/* ─── SECTION LABEL ─── */
+.slabel { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 1.25rem; padding-bottom: 0.55rem; border-bottom: 1px solid var(--border); }
 
-/* timeline */
-.tl{position:relative;padding-left:68px}
-.tl::before{content:'';position:absolute;left:52px;top:4px;bottom:4px;width:.5px;background:var(--bdr2)}
+/* ─── CARD LIST ─── */
+.cards { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 3rem; }
 
-/* slot */
-.slot{position:relative}
-.slot-time{position:absolute;left:-68px;width:48px;text-align:right;font-size:11px;font-weight:500;color:var(--g);top:16px;line-height:1}
-.slot-dot{position:absolute;left:-7px;top:19px;width:7px;height:7px;border-radius:50%;background:var(--g);border:1.5px solid var(--mist);z-index:1}
-.slot-dot.virt{background:var(--br)}
-.slot-dot.int{background:#c0c0c0}
-.slot-cards{padding:0 0 12px 14px}
+/* ─── MEETING CARD ─── */
+.mcard { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; transition: box-shadow 0.18s; }
+.mcard:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.07), 0 10px 30px rgba(0,0,0,0.05); }
+.mcard-grid { display: grid; grid-template-columns: 104px 1fr; }
 
-/* gap + now */
-.gap-row{padding:3px 0 3px 14px;display:flex;align-items:center;gap:6px}
-.gap-line{flex:1;height:.5px;background:var(--bdr)}
-.gap-txt{font-size:10px;color:var(--mut);font-style:italic;white-space:nowrap}
-.now-row{padding:0 0 8px 14px;display:flex;align-items:center;gap:6px}
-.now-dot{width:7px;height:7px;border-radius:50%;background:var(--red);flex-shrink:0}
-.now-lbl{font-size:10px;font-weight:700;color:var(--red);letter-spacing:.04em;white-space:nowrap}
-.now-bar{flex:1;height:.5px;background:rgba(187,45,55,.3)}
+/* ─── LEFT PHOTO COL ─── */
+.pcol { background: var(--paper-warm); display: flex; flex-direction: column; align-items: center; padding: 1.6rem 0.7rem 1.2rem; border-right: 1px solid var(--border); gap: 0.65rem; }
+.avatar-wrap { position: relative; width: 58px; height: 58px; }
+.avatar { width: 58px; height: 58px; border-radius: 50%; object-fit: cover; object-position: top center; border: 2.5px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.14); display: block; }
+.avatar-init { width: 58px; height: 58px; border-radius: 50%; background: var(--forest-pale); color: var(--forest); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 500; border: 2.5px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+.time-box { text-align: center; line-height: 1.4; }
+.time-main { font-size: 11.5px; font-weight: 500; color: var(--ink-muted); }
+.time-dur { font-size: 10px; color: var(--ink-faint); }
 
-/* card */
-.card{background:#fff;border:.5px solid var(--bdr);border-radius:0 12px 12px 0;border-left:2.5px solid var(--g);margin-bottom:5px;overflow:hidden}
-.card.virt{border-left-color:var(--br)}
-.card.int{border-left-color:#ccc}
-.card.past{opacity:.45;pointer-events:none}
+/* ─── RIGHT BODY ─── */
+.mbody { padding: 1.4rem 1.65rem; }
+.pname { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--ink); line-height: 1.15; }
+.prole { font-size: 12.5px; color: var(--ink-muted); margin-top: 3px; line-height: 1.4; }
+.pill { font-size: 11.5px; padding: 3px 10px; border-radius: 100px; display: inline-flex; align-items: center; gap: 4px; line-height: 1.4; }
+.pill-t { background: var(--paper-warm); color: var(--ink-muted); border: 1px solid var(--border); }
 
-/* card top row */
-.card-top{display:flex;align-items:center;gap:12px;padding:11px 14px}
-.avatars{display:flex;flex-shrink:0}
-.av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;flex-shrink:0;border:2px solid #fff;overflow:hidden;background:var(--gl);color:#1a4730}
-.av+.av{margin-left:-14px}
-.av.int{background:#f0f0ef;color:#888}
-.av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.card-mid{flex:1;min-width:0}
-.card-people{font-size:14px;font-weight:600;color:var(--blk);line-height:1.3;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 4px}
-.card-people a{color:var(--blk);text-decoration:none;border-bottom:.5px dashed var(--bdr2)}
-.card-people a:hover{color:var(--g);border-bottom-color:var(--g)}
-.card-people .orgs{font-size:12px;font-weight:400;color:var(--mut);margin-left:2px}
-.card-meta{font-size:12px;color:var(--mut);margin-top:2px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-.card-meta .title{color:var(--blk);font-weight:500}
-.card-meta .sep{opacity:.4}
-.card-action{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
-.join-btn{font-size:11px;font-weight:600;color:#fff;background:var(--br);border:none;border-radius:20px;padding:4px 12px;cursor:pointer;letter-spacing:.02em;white-space:nowrap}
-.join-btn:hover{opacity:.88}
-.loc-pill{font-size:11px;font-weight:500;color:#1a4730;background:var(--gl);border:.5px solid rgba(39,93,67,.2);border-radius:20px;padding:4px 10px;white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis}
-.dur{font-size:11px;color:var(--mut)}
+/* ─── BLOCKS ─── */
+.blk { margin-bottom: 0.9rem; }
+.blk-lbl { font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.3rem; }
+.blk-txt { font-size: 13.5px; color: var(--ink); line-height: 1.65; }
+.blk-txt.quote { background: var(--paper-warm); border-left: 3px solid var(--forest-mid); padding: 0.55rem 1rem; border-radius: 0 7px 7px 0; font-size: 13px; color: var(--ink-muted); font-style: italic; }
 
-/* card context */
-.card-ctx{border-top:.5px solid var(--bdr);padding:10px 14px;display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.card-ctx.single{grid-template-columns:1fr}
-.ctx-box{padding:8px 10px;background:var(--mist);border-radius:8px;border:.5px solid var(--bdr)}
-.ctx-lbl{font-size:9px;color:var(--mut);letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
-.ctx-txt{font-size:12.5px;color:var(--blk);line-height:1.5}
-.ctx-sub{font-size:10px;color:var(--mut);margin-top:2px}
-.ctx-action{font-size:11.5px;color:var(--red);margin-top:3px;font-weight:500}
-.ctx-enriching{grid-column:1/-1;display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mut);padding:4px 0}
+/* ─── BUTTONS (under name) — same pill style ─── */
+.btns { display: flex; flex-wrap: wrap; gap: 6px; margin: 0.6rem 0 0.9rem; }
+.btn { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 100px; font-size: 11.5px; font-weight: 500; text-decoration: none; white-space: nowrap; font-family: 'DM Sans', sans-serif; line-height: 1.4; transition: opacity 0.13s; }
+.btn:hover { opacity: 0.78; }
+.btn-join { background: var(--forest-pale); color: var(--forest); border: 1px solid rgba(43,74,46,0.18); }
+.btn-li { background: var(--gold-pale); color: var(--gold); border: 1px solid rgba(181,120,30,0.18); }
 
-/* modal */
-.modal-back{position:fixed;inset:0;background:rgba(53,53,53,.5);z-index:100;display:flex;align-items:center;justify-content:center;padding:1.5rem}
-.modal{background:#fff;border-radius:14px;max-width:500px;width:100%;max-height:78vh;overflow:hidden;display:flex;flex-direction:column}
-.modal-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:16px 18px 12px;border-bottom:.5px solid var(--bdr)}
-.modal-title{font-size:14px;font-weight:600;color:var(--blk);line-height:1.3;padding-right:10px}
-.modal-close{background:none;border:none;cursor:pointer;color:var(--mut);font-size:20px;line-height:1;padding:0 3px}
-.modal-body{padding:14px 18px;overflow-y:auto;font-size:13px;line-height:1.65;color:var(--blk)}
-.modal-body p{margin-bottom:.625rem}
-.modal-body p:last-child{margin-bottom:0}
-.modal-body a{color:var(--g);word-break:break-all}
+/* ─── FOOTER (bio only) ─── */
+.mfooter { margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--border); }
 
-/* dots */
-.dots{display:inline-flex;gap:3px;align-items:center}
-.dots span{width:3px;height:3px;border-radius:50%;background:var(--br);display:inline-block;animation:dp 1.2s infinite}
-.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
-@keyframes dp{0%,80%,100%{opacity:.2}40%{opacity:1}}
+/* ─── SAME CALL BADGE ─── */
+.same-call-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--ink-faint); background: var(--paper-warm); border: 1px solid var(--border); border-radius: 100px; padding: 2px 9px; margin-bottom: 0.5rem; }
 
-/* empty */
-.empty{padding:1.25rem;text-align:center;color:var(--mut);font-size:13px;font-style:italic;background:#fff;border-radius:12px;border:.5px solid var(--bdr)}
+/* ─── EMPTY / STAMP ─── */
+.empty { background: var(--card); border: 1px dashed var(--border-mid); border-radius: var(--r); padding: 3rem 2rem; text-align: center; color: var(--ink-muted); }
+.empty-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 0.4rem; color: var(--ink); }
+.stamp { text-align: center; font-size: 11px; color: var(--ink-faint); margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); line-height: 1.7; }
 
-/* fatal error */
-.fatal{display:none;font-family:sans-serif;padding:1.5rem;color:var(--red);background:var(--redl);margin:1.5rem;border-radius:8px;border:.5px solid rgba(187,45,55,.2)}
-
-@media(max-width:600px){
-  .app{padding:1.25rem 1rem 3rem}
-  .hdr{flex-direction:column}
-  .hdr-r{align-items:flex-start;flex-direction:row}
-  .tl{padding-left:52px}
-  .tl::before{left:38px}
-  .slot-time{left:-52px;width:36px;font-size:10px}
-  .card-ctx{grid-template-columns:1fr}
-  .av{width:38px;height:38px;font-size:12px}
+@media (max-width: 700px) {
+  .overview { padding: 1.25rem 1.25rem 1.25rem; }
+  .overview-date { font-size: 1.15rem; }
+  .main { padding: 1.5rem 1rem 3rem; }
+  .mcard-grid { grid-template-columns: 80px 1fr; }
+  .mbody { padding: 1rem 1.1rem; }
+  .pcol { padding: 1.25rem 0.5rem 1rem; }
+  .avatar, .avatar-init, .avatar-wrap { width: 46px; height: 46px; font-size: 13px; }
 }
 </style>
 </head>
 <body>
-<div class="app" id="root"></div>
-<div class="fatal" id="fatal-err"><strong>Error:</strong> <span id="fatal-msg"></span></div>
+
+
+<!-- ════════ TABS ════════ -->
+<nav class="tabs">
+  <button class="tab on" onclick="sw('today')" id="t-today">Today · Fri Jun 5</button>
+  <button class="tab" onclick="sw('tomorrow')" id="t-tomorrow">Tomorrow · Sat Jun 6</button>
+</nav>
+
+<main class="main">
+
+<!-- ════════════ TODAY ════════════ -->
+<section class="day on" id="d-today">
+
+  <div class="chip">
+    <div class="chip-summary"><strong>5 external people</strong> across 4 meetings today — two Muslim criminology scholars, a City of Edmonton faith-housing researcher, an Edmonton Unlimited experts session, and a social finance managing partner.</div>
+    <div class="chip-stats">
+      <div class="stat"><span class="stat-icon">🤝</span><span><strong>5</strong> external</span></div>
+      <div class="stat"><span class="stat-icon">👥</span><span><strong>5</strong> internal</span></div>
+      <div class="stat"><span class="stat-icon">📍</span><span><strong>1</strong> in-person</span></div>
+      <div class="stat"><span class="stat-icon">🚗</span><span><strong>1</strong> offsite <span class="offsite-sub">· Jummah, Hüb-2 Green Room</span></span></div>
+      <div class="stat-divider"></div>
+      <div class="weather-stat"><span class="weather-icon">☀️</span><strong>17°C</strong><span class="weather-cond">Sunny · 19°C tomorrow</span></div>
+    </div>
+  </div>
+
+  <p class="slabel">External meetings · Friday June 5</p>
+  <div class="cards">
+
+    <!-- ── FAHID QURASHI ── -->
+    <article class="mcard">
+      <div class="mcard-grid">
+        <div class="pcol">
+          <div class="avatar-wrap">
+            <img class="avatar" src="https://salford-repository.worktribe.com/avatar/1177284" alt="Dr. Fahid Qurashi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="avatar-init" style="display:none">FQ</div>
+          </div>
+          <div class="time-box"><div class="time-main">9:00 AM</div><div class="time-dur">30 min</div></div>
+        </div>
+        <div class="mbody">
+          <div class="pname">Dr. Fahid Qurashi</div>
+          <div class="prole">Lecturer in Criminology, University of Salford · Research Director, Ayaan Institute</div>
+          <div class="btns">
+            <a class="btn btn-join" href="https://meet.google.com/krp-pafj-nps" target="_blank">📹 Google Meet ↗</a>
+            <a class="btn btn-li" href="https://www.linkedin.com/in/fahid-qurashi-914a916b/" target="_blank">LinkedIn ↗</a>
+            <span class="pill pill-t">Fahid / Amin / Omar</span>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">Meeting purpose</div>
+            <div class="blk-txt">Connecting with two leading Muslim scholars on criminology and Islamophobia. The thread mentions articles they sent you and "discuss next steps" — an ongoing scholarly relationship you're developing, with a research/collaboration proposal taking shape.</div>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">From your emails</div>
+            <div class="blk-txt quote">Amin initiated post-Eid: "I spoke with the gentleman from UofR today concerning the proposal — I have to say that from the outset, I was confused by the proposal to develop an NDA." Fahid confirmed availability. Your EA Shion booked this slot.</div>
+          </div>
+          <div class="mfooter">
+            <div class="blk-lbl">Who he is</div>
+            <div class="blk-txt" style="font-size:13px">Named one of the UK's top 10 most influential Muslims in education. Fahid's research spans Political Islam, Islamophobia, and counterterrorism — with a focus on how Muslim communities are disproportionately targeted by systems like PREVENT. Research Director at the Ayaan Institute.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── AMIN ASFARI ── -->
+    <article class="mcard">
+      <div class="mcard-grid">
+        <div class="pcol">
+          <div class="avatar-wrap">
+            <img class="avatar" src="https://www.uregina.ca/stories/2024/images/11-25/11-25-1600x1066.jpg" alt="Dr. Amin Asfari" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="avatar-init" style="display:none">AA</div>
+          </div>
+          <div class="time-box"><div class="time-main">9:00 AM</div><div class="time-dur">Same call</div></div>
+        </div>
+        <div class="mbody">
+          <span class="same-call-badge">↑ Same Google Meet as Fahid</span>
+          <div class="pname">Dr. Amin Asfari</div>
+          <div class="prole">Law Foundation Chair in Police Studies, University of Regina · Associate Professor, Justice Studies</div>
+          <div class="btns">
+            <a class="btn btn-join" href="https://meet.google.com/krp-pafj-nps" target="_blank">📹 Google Meet ↗</a>
+            <a class="btn btn-li" href="https://ca.linkedin.com/in/aminasfari" target="_blank">LinkedIn ↗</a>
+          </div>
+          <div class="mfooter">
+            <div class="blk-lbl">Who he is</div>
+            <div class="blk-txt" style="font-size:13px">Saskatchewan-based criminologist specialising in Islamophobia, hate crime, and police-minority relations. Co-author of <em>Jews and Muslims in the White Supremacist Conspiratorial Imagination</em> (Routledge). Actively building relationships with Muslim nonprofits in Regina — a natural research ally for IslamicFamily's community safety and advocacy work.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── NOUR SALHI ── -->
+    <article class="mcard">
+      <div class="mcard-grid">
+        <div class="pcol">
+          <div class="avatar-init">NS</div>
+          <div class="time-box"><div class="time-main">10:00 AM</div><div class="time-dur">30 min</div></div>
+        </div>
+        <div class="mbody">
+          <div class="pname">Nour Salhi</div>
+          <div class="prole">City of Edmonton · Faith-based Housing Researcher</div>
+          <div class="btns">
+            <a class="btn btn-join" href="https://meet.google.com/mpe-cpbz-xph" target="_blank">📹 Google Meet ↗</a>
+            <span class="pill pill-t">Faith-based Housing Interview</span>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">Meeting purpose</div>
+            <div class="blk-txt">Nour booked through your Calendly to interview you on faith-based housing — she's conducting City of Edmonton research on this space and wants your lived experience and expertise as a practitioner.</div>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">From your emails</div>
+            <div class="blk-txt quote">Nour accepted the invite this morning. She also appears on a June 19 CYF Ice Cream Check-In with City colleagues — embedded in Edmonton's civic innovation programs. Phone: 780-680-8237.</div>
+          </div>
+          <div class="mfooter">
+            <div class="blk-lbl">Who she is</div>
+            <div class="blk-txt" style="font-size:13px">Edmonton-based civic researcher at the City, educated at University of Alberta. She's written on housing encampments and homelessness and works at the intersection of faith, community, and housing policy — a signal the City is engaging faith-based orgs as knowledge holders in housing research.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── REZA MOHSENI ── -->
+    <article class="mcard">
+      <div class="mcard-grid">
+        <div class="pcol">
+          <div class="avatar-init">RM</div>
+          <div class="time-box"><div class="time-main">11:30 AM</div><div class="time-dur">30 min</div></div>
+        </div>
+        <div class="mbody">
+          <div class="pname">Reza Mohseni</div>
+          <div class="prole">Experts on Demand, Edmonton Unlimited</div>
+          <div class="btns">
+            <a class="btn btn-join" href="https://meet.google.com/jbv-gedx-thq" target="_blank">📹 Google Meet ↗</a>
+            <span class="pill pill-t">Transform · Equity Table</span>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">Meeting purpose</div>
+            <div class="blk-txt">Edmonton Unlimited's EOD program provides up to 100 hours of free expert advisory support. You booked this for legal help structuring Transform's initial equity table for Flourishing Systems.</div>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">From your calendar</div>
+            <div class="blk-txt quote">"We are looking for legal support to help with setting up with initial equity table." Omar Kalim is also joining.</div>
+          </div>
+          <div class="mfooter">
+            <div class="blk-lbl">Who they are</div>
+            <div class="blk-txt" style="font-size:13px">Reza and Shalon run Edmonton Unlimited's EOD program — a fully-funded advisory service connecting Edmonton tech companies and nonprofits with specialist coaching at no cost.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── SHALON MCFARLANE ── -->
+    <article class="mcard">
+      <div class="mcard-grid">
+        <div class="pcol">
+          <div class="avatar-init">SM</div>
+          <div class="time-box"><div class="time-main">11:30 AM</div><div class="time-dur">Same call</div></div>
+        </div>
+        <div class="mbody">
+          <span class="same-call-badge">↑ Same Google Meet as Reza</span>
+          <div class="pname">Shalon McFarlane</div>
+          <div class="prole">Experts on Demand, Edmonton Unlimited</div>
+          <div class="btns">
+            <a class="btn btn-join" href="https://meet.google.com/jbv-gedx-thq" target="_blank">📹 Google Meet ↗</a>
+          </div>
+          <div class="mfooter">
+            <div class="blk-lbl">Who she is</div>
+            <div class="blk-txt" style="font-size:13px">Co-lead on EOD alongside Reza. Edmonton Unlimited is a city-backed innovation agency. The program covers legal, finance, HR, strategy, and more — free for eligible Edmonton organizations.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── GARTH DAVIS ── -->
+    <article class="mcard">
+      <div class="mcard-grid">
+        <div class="pcol">
+          <div class="avatar-wrap">
+            <img class="avatar" src="https://assets.swoogo.com/uploads/full/3040438-6526ea206d826.png" alt="Garth Davis" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="avatar-init" style="display:none">GD</div>
+          </div>
+          <div class="time-box"><div class="time-main">1:00 PM</div><div class="time-dur">45 min</div></div>
+        </div>
+        <div class="mbody">
+          <div class="pname">Garth Davis</div>
+          <div class="prole">Managing Partner, New Market Funds · Vancouver</div>
+          <div class="btns">
+            <a class="btn btn-join" href="https://meet.google.com/qqb-fnjj-phq" target="_blank">📹 Google Meet ↗</a>
+            <a class="btn btn-li" href="https://ca.linkedin.com/in/garth-davis-2992b61a" target="_blank">LinkedIn ↗</a>
+            <span class="pill pill-t">Social Finance · Halal Housing Fund</span>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">Meeting purpose</div>
+            <div class="blk-txt">You initiated this reconnect to explore fit with New Market Funds and get Garth's advice — directly relevant to the Halal Affordable Housing Investment Fund LP structure you're building with SVX, targeting an August 2026 first close.</div>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">From your emails</div>
+            <div class="blk-txt quote">"Wanted to reconnect and explore whether there's a fit with New Market Funds and more generally get your advice and insights." Garth accepted the same day.</div>
+          </div>
+          <div class="mfooter">
+            <div class="blk-lbl">Who he is</div>
+            <div class="blk-txt" style="font-size:13px">One of Canada's leading figures in affordable housing social finance. Managing Partner of New Market Funds — a B-Corp managing over $110M. Pioneered Canada's first market-based affordable housing investment fund. 30+ years spanning Vancity, Scotia Bank, and Turtle Creek. The archetype advisor and potential investor for halalfund.ca.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── BRIAN MAKOWECKI ── -->
+    <article class="mcard">
+      <div class="mcard-grid">
+        <div class="pcol">
+          <div class="avatar-init">BM</div>
+          <div class="time-box"><div class="time-main">3:30 PM</div><div class="time-dur">50 min</div></div>
+        </div>
+        <div class="mbody">
+          <div class="pname">Brian Makowecki</div>
+          <div class="prole">Assistant Deputy Minister, Children &amp; Family Services · Government of Alberta</div>
+          <div class="btns">
+            <a class="btn btn-join" href="https://teams.microsoft.com/meet/244883371626224?p=nbyCXbFg2ZVnZRBpNr" target="_blank">💻 Microsoft Teams ↗</a>
+            <a class="btn btn-li" href="https://www.linkedin.com/in/brian-makowecki-988a0a5b/" target="_blank">LinkedIn ↗</a>
+            <span class="pill pill-t">Follow-up from Upper Bound</span>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">Meeting purpose</div>
+            <div class="blk-txt">Brian reached out directly after your Upper Bound presentation. His EA Barbara King confirmed June 5. Fiaz is joining from IslamicFamily's side.</div>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">From your emails</div>
+            <div class="blk-txt quote">"Thanks for the presentation this morning Omar. It was nice to meet you… It would be worth finding a bit of time to connect." — Brian, May 22.</div>
+          </div>
+          <div class="mfooter">
+            <div class="blk-lbl">Who he is</div>
+            <div class="blk-txt" style="font-size:13px">Senior civil servant with deep experience across the Alberta government — currently ADM in Children and Family Services, a ministry with direct touchpoints to the communities IslamicFamily serves. His outreach after Upper Bound signals genuine interest in partnership at a government level.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ════════════ TOMORROW ════════════ -->
+<section class="day" id="d-tomorrow">
+  <div class="chip">
+    <div class="chip-summary"><strong>No external meetings on Saturday June 6.</strong> Internal task blocks only.</div>
+    <div class="chip-stats">
+      <div class="weather-stat"><span class="weather-icon">🌤️</span><strong>19°C</strong><span class="weather-cond">Mostly sunny</span></div>
+    </div>
+  </div>
+  <div class="empty">
+    <div class="empty-title">A clear Saturday.</div>
+    <p>No external meetings found for June 6, 2026.</p>
+  </div>
+</section>
+
+<p class="stamp">Generated Friday June 5 · 2026</p>
+
+</main>
+
 <script>
-window.onerror = function(msg,src,line){
-  document.getElementById('fatal-err').style.display='block';
-  document.getElementById('fatal-msg').textContent = msg+' (line '+line+')';
-};
-</script>
-<script>
-// ── CONFIG ─────────────────────────────────────────────────────────────────
-const CLIENT_ID      = '81359003976-peulai0h863528iu5htb3sc7tknsamtc.apps.googleusercontent.com';
-const OWNER_CALENDAR = 'omar@islamicfamily.ca';
-const OWNER_NAME     = 'Omar Yaqub';
-const PROXY_URL      = 'https://proxy.servanting.ca';
-// ───────────────────────────────────────────────────────────────────────────
-
-const SCOPES = [
-  'https://www.googleapis.com/auth/calendar.readonly',
-  'https://www.googleapis.com/auth/gmail.readonly',
-  'https://www.googleapis.com/auth/contacts.readonly',
-  'openid','email'
-].join(' ');
-
-// Note: directory scope only works for Google Workspace admins
-// Photos come from contacts list (people/me/connections) for most users
-
-const IF_DOMAINS = ['islamicfamily.ca','flourishing.systems'];
-const IF_KW      = ['islamicfamily','islamic family','flourishing systems'];
-const CACHE_KEY  = 'mb_cache_v5';
-const TOK_KEY    = 'mb_tok_v5';
-
-var S = {
-  token: sessionStorage.getItem(TOK_KEY)||null,
-  viewerEmail: null,
-  events: null,
-  loading: false,
-  error: null,
-  lastLoaded: null,
-  enrichCache: {},   // email -> enrichment data
-  photoCache: {},    // email -> photo url or null
-  enriching: {}      // email -> bool
-};
-
-// ── helpers ──────────────────────────────────────────────────────────────────
-function isInternal(a){
-  if(!a) return false;
-  var e=(a.email||'').toLowerCase(), n=(a.displayName||'').toLowerCase();
-  return IF_DOMAINS.some(function(d){return e.indexOf(d)>-1;}) ||
-    IF_KW.some(function(k){return n.indexOf(k)>-1||e.indexOf(k)>-1;});
+function sw(which) {
+  document.querySelectorAll('.day').forEach(d => d.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('d-' + which).classList.add('on');
+  document.getElementById('t-' + which).classList.add('on');
 }
-function initials(name){
-  return (name||'?').split(' ').filter(Boolean).slice(0,2).map(function(w){return w[0].toUpperCase();}).join('')||'?';
-}
-function fmtTime(iso){
-  if(!iso) return '';
-  return new Date(iso).toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit',hour12:true});
-}
-function fmtDur(s,e){
-  if(!s||!e) return '';
-  var m=Math.round((new Date(e)-new Date(s))/60000);
-  if(m<60) return m+'m';
-  var h=Math.floor(m/60),r=m%60;
-  return r?(h+'h '+r+'m'):(h+'h');
-}
-function fmtGap(mins){
-  if(mins<5) return null;
-  if(mins<60) return mins+'m gap';
-  var h=Math.floor(mins/60),r=mins%60;
-  return r?(h+'h '+r+'m gap'):(h+'h gap');
-}
-function isVirtual(ev){
-  var l=(ev.location||'').toLowerCase(), d=(ev.description||'').toLowerCase();
-  return l.indexOf('zoom')>-1||l.indexOf('meet')>-1||l.indexOf('teams')>-1||
-    l.indexOf('https://')===0||d.indexOf('zoom')>-1||d.indexOf('meet.google')>-1||
-    d.indexOf('teams.microsoft')>-1||d.indexOf('join the meeting')>-1;
-}
-function getMeetLink(ev){
-  var l=ev.location||'', d=ev.description||'';
-  var combined=l+' '+d;
-  var m=combined.match(/(https?:\/\/[^\s"<>]+)/g)||[];
-  return m.find(function(u){
-    return u.indexOf('zoom')>-1||u.indexOf('meet.google')>-1||u.indexOf('teams.microsoft')>-1;
-  })||null;
-}
-function getLocLabel(ev){
-  var l=ev.location||'';
-  if(!l||l.toLowerCase().indexOf('http')===0) return null;
-  return l.length>35?l.slice(0,32)+'…':l;
-}
-function hasPrep(ev){
-  var d=ev.description||'';
-  return d.length>80||d.toLowerCase().indexOf('agenda')>-1||d.indexOf('http')>-1;
-}
-function dayBounds(offset){
-  var d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+offset);
-  var e=new Date(d); e.setDate(d.getDate()+1);
-  return {start:d,end:e};
-}
-function nowStr(){
-  return new Date().toLocaleDateString('en-CA',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
-}
-function esc(s){
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function liUrl(name, org){
-  var q = org ? (name+' '+org) : name;
-  return 'https://www.linkedin.com/search/results/people/?keywords='+encodeURIComponent(q);
-}
-
-// ── Google API ────────────────────────────────────────────────────────────────
-function apiFetch(tok, url){
-  return fetch(url, {headers:{Authorization:'Bearer '+tok}}).then(function(r){
-    if(r.status===401) throw new Error('401');
-    return r.json();
-  });
-}
-
-function fetchEvents(tok){
-  var start=dayBounds(0).start, end=dayBounds(2).end;
-  var calId=encodeURIComponent(OWNER_CALENDAR);
-  var url='https://www.googleapis.com/calendar/v3/calendars/'+calId+'/events'
-    +'?timeMin='+start.toISOString()+'&timeMax='+end.toISOString()
-    +'&singleEvents=true&orderBy=startTime&maxResults=50';
-  return apiFetch(tok,url).then(function(d){
-    if(d.error) throw new Error(d.error.message);
-    return (d.items||[]).filter(function(e){
-      return e.status!=='cancelled' && e.start && e.start.dateTime;
-    });
-  });
-}
-
-function fetchViewerEmail(tok){
-  return apiFetch(tok,'https://www.googleapis.com/oauth2/v2/userinfo')
-    .then(function(d){return d.email||null;})
-    .catch(function(){return null;});
-}
-
-
-function fetchContactPhoto(tok, email){
-  // Apollo handles photos now — this just falls back to Google Contacts
-  var contactUrl='https://people.googleapis.com/v1/people/me/connections'
-    +'?personFields=photos,emailAddresses&pageSize=500';
-  return apiFetch(tok, contactUrl).then(function(d){
-    var conns=d.connections||[];
-    var match=conns.find(function(p){
-      return (p.emailAddresses||[]).some(function(ea){
-        return (ea.value||'').toLowerCase()===email.toLowerCase();
-      });
-    });
-    if(match){
-      var photos=match.photos||[];
-      var photo=photos.find(function(ph){return !ph.default;});
-      if(photo) return photo.url;
-    }
-    return null;
-  }).catch(function(){ return null; });
-}
-
-function fetchPastMeetings(tok, email){
-  var past=new Date(); past.setMonth(past.getMonth()-6);
-  var calId=encodeURIComponent(OWNER_CALENDAR);
-  var url='https://www.googleapis.com/calendar/v3/calendars/'+calId+'/events'
-    +'?timeMin='+past.toISOString()+'&timeMax='+new Date().toISOString()
-    +'&singleEvents=true&orderBy=startTime&maxResults=100'
-    +'&q='+encodeURIComponent(email);
-  return apiFetch(tok,url).then(function(d){
-    var matches=(d.items||[]).filter(function(e){
-      return e.status!=='cancelled' &&
-        (e.attendees||[]).some(function(a){
-          return (a.email||'').toLowerCase()===email.toLowerCase();
-        });
-    });
-    if(!matches.length) return null;
-    var last=matches[matches.length-1];
-    var lastDate=new Date(last.start.dateTime);
-    var now=new Date();
-    var diffDays=Math.round((now-lastDate)/86400000);
-    if(diffDays===0) return 'met today';
-    if(diffDays===1) return 'met yesterday';
-    if(diffDays<7) return 'met '+diffDays+' days ago';
-    if(diffDays<14) return 'met 1 week ago';
-    if(diffDays<30) return 'met '+Math.round(diffDays/7)+' weeks ago';
-    if(diffDays<60) return 'met 1 month ago';
-    return 'met '+Math.round(diffDays/30)+' months ago';
-  }).catch(function(){return null;});
-}
-
-function fetchEmails(tok, email){
-  var q=encodeURIComponent('from:'+email+' OR to:'+email);
-  return apiFetch(tok,'https://gmail.googleapis.com/gmail/v1/users/me/messages?q='+q+'&maxResults=3')
-    .then(function(d){
-      if(!d.messages) return [];
-      return Promise.all(d.messages.slice(0,3).map(function(m){
-        return apiFetch(tok,'https://gmail.googleapis.com/gmail/v1/users/me/messages/'+m.id
-          +'?format=metadata&metadataHeaders=Subject&metadataHeaders=Date')
-          .then(function(d2){
-            var hdrs=d2.payload&&d2.payload.headers||[];
-            return {
-              subject:(hdrs.find(function(h){return h.name==='Subject';})||{}).value||'(no subject)',
-              date:(hdrs.find(function(h){return h.name==='Date';})||{}).value||'',
-              snippet:d2.snippet||''
-            };
-          });
-      }));
-    }).catch(function(){return [];});
-}
-
-function enrichContact(name, email, meetingTitle, meetingDesc, emails, lastMet, apollo){
-  return fetch(PROXY_URL+'/enrich', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      name: name,
-      email: email,
-      meetingTitle: meetingTitle,
-      meetingDesc: (meetingDesc||'').slice(0,300),
-      emails: (emails||[]).slice(0,3),
-      lastMet: lastMet||''
-    })
-  }).then(function(r){ return r.json(); })
-  .then(function(d){
-    console.log('[Enrich]', name, d);
-    return (d && d.data) ? d.data : {};
-  }).catch(function(e){ console.warn('[Enrich error]', e); return {}; });
-}
-
-// ── render ────────────────────────────────────────────────────────────────────
-function avatarEl(att, size){
-  size = size||48;
-  var name = att.displayName||att.email||'?';
-  var photo = S.photoCache[att.email];
-  var isInt = isInternal(att);
-  var bg = isInt ? '#f0f0ef' : '#e8f2ed';
-  var fg = isInt ? '#888' : '#1a4730';
-  var html = '<div class="av'+(isInt?' int':'')+'" style="width:'+size+'px;height:'+size+'px;min-width:'+size+'px;background:'+bg+';color:'+fg+'">';
-  if(photo){
-    html += '<img src="'+esc(photo)+'" alt="'+esc(name)+'" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML=\''+initials(name)+'\'">';
-  } else {
-    html += initials(name);
-  }
-  html += '</div>';
-  return html;
-}
-
-function cardHtml(ev){
-  var ext=(ev.attendees||[]).filter(function(a){return !a.self&&!isInternal(a);});
-  var intl=(ev.attendees||[]).filter(function(a){return !a.self&&isInternal(a);});
-  var allInt=ext.length===0;
-  var virt=isVirtual(ev);
-  var loc=getLocLabel(ev);
-  var meetLink=getMeetLink(ev);
-  var dur=fmtDur(ev.start&&ev.start.dateTime, ev.end&&ev.end.dateTime);
-  var prep=hasPrep(ev);
-  var typeClass=allInt?'int':virt?'virt':'';
-  var now=new Date();
-  var endDt=ev.end&&ev.end.dateTime?new Date(ev.end.dateTime):null;
-  var isPast=endDt&&endDt<now;
-
-  // ── Internal card ─────────────────────────────────────────────────────────
-  if(allInt){
-    var whoNames=(intl.length?intl:ev.attendees||[]).filter(function(a){return !a.self;});
-    var avatarsHtml=whoNames.slice(0,3).map(function(a){return avatarEl(a,40);}).join('');
-    function cleanIntName(a){
-    if(a.displayName) return a.displayName;
-    var prefix=(a.email||'').split('@')[0]||'?';
-    return prefix.replace(/[._-]+/g,' ').replace(/\w/g,function(c){return c.toUpperCase();});
-  }
-  var nameStr=whoNames.slice(0,2).map(function(a){return cleanIntName(a);}).join(', ');
-    if(whoNames.length>2) nameStr+=' +'+( whoNames.length-2);
-    var actionHtml='';
-    if(virt&&meetLink) actionHtml='<button class="join-btn" onclick="window.open(\''+esc(meetLink)+'\',\'_blank\')" style="background:#888">Join</button>';
-    else if(loc) actionHtml='<span class="loc-pill">'+esc(loc)+'</span>';
-    if(dur) actionHtml+=(actionHtml?' ':'')+'<span class="dur">'+esc(dur)+'</span>';
-
-    return '<div class="card int'+(isPast?' past':'')+'">'
-      +'<div class="card-top">'
-      +'<div class="avatars">'+avatarsHtml+'</div>'
-      +'<div class="card-mid">'
-      +'<div class="card-people" style="font-size:13px;font-weight:600">'+esc(ev.summary||'Meeting')+'</div>'
-      +'<div class="card-meta"><span>'+esc(nameStr)+'</span><span class="sep">·</span><span>IslamicFamily</span></div>'
-      +'</div>'
-      +(actionHtml?'<div class="card-action">'+actionHtml+'</div>':'')
-      +'</div>'
-      +'</div>';
-  }
-
-  // ── External card ─────────────────────────────────────────────────────────
-  var enr=S.enrichCache[ext[0]&&ext[0].email]||null;
-  var isEnriching=!!(S.enriching[ext[0]&&ext[0].email]);
-
-  // Avatars row (up to 3)
-  var avatarsHtml=ext.slice(0,3).map(function(a){return avatarEl(a,48);}).join('');
-
-  // People names + orgs
-  function cleanName(a, idx){
-    if(a.displayName) return a.displayName;
-    // Turn email prefix into readable name: john.doe -> John Doe
-    var prefix=(a.email||'').split('@')[0]||'?';
-    return prefix.replace(/[._-]+/g,' ').replace(/\w/g,function(c){return c.toUpperCase();});
-  }
-
-  var peopleHtml=ext.slice(0,3).map(function(a,i){
-    var name=cleanName(a,i);
-    var org=(i===0&&enr&&enr.org)?enr.org:'';
-    // Use real LinkedIn URL from Apollo if available, else search
-    var apolloD=(i===0)?S.enrichCache[a.email]:null;
-    var href=(apolloD&&apolloD.linkedinUrl)?apolloD.linkedinUrl:liUrl(name,org);
-    return '<a href="'+esc(href)+'" target="_blank" rel="noopener">'+esc(name)+'</a>';
-  }).join('<span class="sep"> + </span>');
-
-  var orgs=ext.slice(0,3).map(function(a,i){
-    if(i===0&&enr&&enr.org) return enr.org;
-    return '';
-  }).filter(Boolean);
-  if(orgs.length) peopleHtml+='<span class="orgs">· '+esc(orgs.join(', '))+'</span>';
-
-  // Title + last met
-  var metaItems=[];
-  if(enr&&enr.title) metaItems.push('<span class="title">'+esc(enr.title)+'</span>');
-  if(enr&&enr.lastMet) metaItems.push('<span>'+esc(enr.lastMet)+'</span>');
-  var metaHtml=metaItems.length?'<div class="card-meta">'+metaItems.join('<span class="sep"> · </span>')+'</div>':'';
-
-  // Action button
-  var actionHtml='';
-  if(virt&&meetLink) actionHtml='<button class="join-btn" onclick="window.open(\''+esc(meetLink)+'\',\'_blank\')">Join</button>';
-  else if(virt) actionHtml='<button class="join-btn" onclick="return false">Join</button>';
-  else if(loc) actionHtml='<span class="loc-pill">'+esc(loc)+'</span>';
-  if(dur) actionHtml=(actionHtml?actionHtml+'<br>':'')+' <span class="dur">'+esc(dur)+'</span>';
-
-  var topHtml='<div class="card-top">'
-    +'<div class="avatars">'+avatarsHtml+'</div>'
-    +'<div class="card-mid">'
-    +'<div class="card-people">'+peopleHtml+'</div>'
-    +metaHtml
-    +'</div>'
-    +(actionHtml?'<div class="card-action">'+actionHtml+'</div>':'')
-    +'</div>';
-
-  // Context block
-  var ctxHtml='';
-  if(isEnriching){
-    ctxHtml='<div class="card-ctx single"><div class="ctx-enriching">'
-      +'<span class="dots"><span></span><span></span><span></span></span> gathering context…</div></div>';
-  } else if(enr){
-    var boxes=[];
-    // Agenda / purpose box
-    var agendaContent='';
-    if(prep&&ev.description) {
-      var prepId='prep-'+ev.id.replace(/[^a-zA-Z0-9]/g,'');
-      S.prepStore=S.prepStore||{};
-      S.prepStore[prepId]={title:ev.summary||'Meeting',desc:ev.description};
-      agendaContent='<button class="prep-open" data-id="'+prepId+'" style="background:none;border:none;cursor:pointer;font-size:12.5px;color:var(--g);text-decoration:underline;padding:0;font-family:inherit">View agenda</button>';
-    } else if(enr.meetingPurpose){
-      agendaContent='<span>'+esc(enr.meetingPurpose)+'</span>';
-    }
-    if(agendaContent) boxes.push('<div class="ctx-box"><div class="ctx-lbl">Purpose</div><div class="ctx-txt">'+agendaContent+'</div></div>');
-
-    // Email box
-    if(enr.emailSummary){
-      var emailBox='<div class="ctx-box"><div class="ctx-lbl">Last email'+(enr.emailDate?' · '+esc(enr.emailDate):'')+'</div>'
-        +'<div class="ctx-txt">'+esc(enr.emailSummary)+'</div>'
-        +(enr.actionItems?'<div class="ctx-action">↳ '+esc(enr.actionItems)+'</div>':'')
-        +'</div>';
-      boxes.push(emailBox);
-    }
-
-    if(boxes.length){
-      var single=boxes.length===1;
-      ctxHtml='<div class="card-ctx'+(single?' single':'')+'">'+boxes.join('')+'</div>';
-    }
-  }
-
-  return '<div class="card '+typeClass+(isPast?' past':'')+'">'
-    +topHtml
-    +ctxHtml
-    +'</div>';
-}
-
-function buildTimeline(evs){
-  if(!evs.length) return '<div class="empty">No meetings scheduled</div>';
-
-  var sorted=evs.slice().sort(function(a,b){
-    return new Date(a.start.dateTime)-new Date(b.start.dateTime);
-  });
-
-  // Group by time
-  var groups=[];
-  sorted.forEach(function(ev){
-    var t=fmtTime(ev.start.dateTime);
-    var last=groups[groups.length-1];
-    if(last&&last.time===t) { last.evs.push(ev); }
-    else groups.push({time:t, evs:[ev], startDt:new Date(ev.start.dateTime)});
-  });
-  groups.forEach(function(g){
-    g.endDt=g.evs.reduce(function(mx,e){
-      var d=new Date(e.end&&e.end.dateTime||e.start.dateTime);
-      return d>mx?d:mx;
-    }, g.startDt);
-  });
-
-  var now=new Date();
-  var html='<div class="tl">';
-  var nowInserted=false;
-
-  groups.forEach(function(g,i){
-    var allInt=g.evs.every(function(ev){
-      return (ev.attendees||[]).filter(function(a){return !a.self&&!isInternal(a);}).length===0;
-    });
-    var anyVirt=g.evs.some(isVirtual);
-    var dotClass=allInt?'int':anyVirt?'virt':'';
-
-    // Gap
-    if(i>0){
-      var prev=groups[i-1];
-      var gapMins=Math.round((g.startDt-prev.endDt)/60000);
-      var gapLabel=fmtGap(gapMins);
-      if(gapLabel) html+='<div class="gap-row"><div class="gap-line"></div><span class="gap-txt">'+gapLabel+'</span><div class="gap-line"></div></div>';
-    }
-
-    // NOW marker — insert before next upcoming slot
-    if(!nowInserted && now<g.startDt){
-      var timeStr=now.toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit',hour12:true});
-      html+='<div class="now-row"><div class="now-dot"></div><span class="now-lbl">NOW · '+timeStr+'</span><div class="now-bar"></div></div>';
-      nowInserted=true;
-    }
-
-    html+='<div class="slot">'
-      +'<div class="slot-time">'+esc(g.time)+'</div>'
-      +'<div class="slot-dot '+dotClass+'"></div>'
-      +'<div class="slot-cards">'+g.evs.map(cardHtml).join('')+'</div>'
-      +'</div>';
-  });
-
-  // NOW after all meetings — only if we haven't inserted it and today hasn't ended
-  if(!nowInserted && now<groups[groups.length-1].endDt){
-    var timeStr=now.toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit',hour12:true});
-    html+='<div class="now-row" style="padding-left:14px"><div class="now-dot"></div><span class="now-lbl">NOW · '+timeStr+'</span><div class="now-bar"></div></div>';
-  }
-
-  html+='</div>';
-  return html;
-}
-
-function render(){
-  var root=document.getElementById('root');
-  var token=S.token, events=S.events, loading=S.loading, error=S.error, lastLoaded=S.lastLoaded, viewerEmail=S.viewerEmail;
-  var isOwner=viewerEmail&&viewerEmail.toLowerCase()===OWNER_CALENDAR.toLowerCase();
-
-  if(!token){
-    root.innerHTML='<div class="auth">'
-      +'<div class="auth-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="22" height="22"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>'
-      +'<h2>'+esc(OWNER_NAME)+'\'s meeting brief</h2>'
-      +'<p>Sign in with your Google account to see today and tomorrow\'s meetings with AI-enriched context.</p>'
-      +'<button class="auth-btn" onclick="handleSignIn()">'
-      +'<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="16" height="16"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg>'
-      +'Sign in with Google</button>'
-      +(CLIENT_ID==='YOUR_GOOGLE_CLIENT_ID_HERE'?'<div class="auth-note">⚠ Client ID not configured</div>':'')
-      +'</div>';
-    return;
-  }
-
-  if(loading&&!events){
-    root.innerHTML='<div class="loading"><div class="spin"></div><p>Loading calendar…</p></div>';
-    return;
-  }
-
-  var b0=dayBounds(0), b1=dayBounds(1), b2=dayBounds(2);
-  var todayEvs=(events||[]).filter(function(e){var d=new Date(e.start.dateTime);return d>=b0.start&&d<b1.start;});
-  var tmrwEvs=(events||[]).filter(function(e){var d=new Date(e.start.dateTime);return d>=b1.start&&d<b2.start;});
-
-  var lastStr=lastLoaded?new Date(lastLoaded).toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit',hour12:true}):'';
-  var viewerNotice=(!isOwner&&viewerEmail)
-    ?'<div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Viewing as '+esc(viewerEmail)+' — showing '+esc(OWNER_NAME)+'\'s calendar</div>'
-    :'';
-
-  var todayDate=new Date().toLocaleDateString('en-CA',{weekday:'short',month:'short',day:'numeric'});
-  var tmrwDate=new Date(Date.now()+86400000).toLocaleDateString('en-CA',{weekday:'short',month:'short',day:'numeric'});
-
-  root.innerHTML=
-    '<div class="hdr">'
-    +'<div><div class="hdr-title">Meeting brief</div>'
-    +'<div class="hdr-sub">'+esc(OWNER_NAME)+' · IslamicFamily'+(lastStr?' · Updated '+lastStr:'')+'</div></div>'
-    +'<div class="hdr-r">'
-    +'<span class="date-pill">'+nowStr()+'</span>'
-    +'<button class="btn-refresh" onclick="doLoad(S.token)">'
-    +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>'
-    +' Refresh</button>'
-    +'</div></div>'
-    +(error?'<div class="err">⚠ '+esc(error)+'</div>':'')
-    +viewerNotice
-    +'<div class="day">'
-    +'<div class="day-hdr"><h2 class="today">Today</h2><span class="day-date">'+esc(todayDate)+'</span><div class="day-line"></div><span class="day-count">'+todayEvs.length+' meeting'+(todayEvs.length!==1?'s':'')+'</span></div>'
-    +buildTimeline(todayEvs)
-    +'</div>'
-    +'<div class="day">'
-    +'<div class="day-hdr"><h2 class="tmrw">Tomorrow</h2><span class="day-date">'+esc(tmrwDate)+'</span><div class="day-line"></div><span class="day-count">'+tmrwEvs.length+' meeting'+(tmrwEvs.length!==1?'s':'')+'</span></div>'
-    +buildTimeline(tmrwEvs)
-    +'</div>';
-}
-
-// ── prep modal ────────────────────────────────────────────────────────────────
-function openPrep(idOrTitle, description){
-  var title, raw;
-  if(S.prepStore&&S.prepStore[idOrTitle]){
-    title=S.prepStore[idOrTitle].title;
-    raw=S.prepStore[idOrTitle].desc||'';
-  } else {
-    title=idOrTitle; raw=description||'';
-  }
-  var escaped=raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  var linked=escaped.replace(/(https?:\/\/[^\s<>"&]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
-  var paras=linked.split(/\n\n+/);
-  var formatted=paras.map(function(p){return '<p>'+p.replace(/\n/g,'<br>')+'</p>';}).join('');
-
-  var back=document.createElement('div');
-  back.className='modal-back';
-  back.id='prep-modal';
-  back.innerHTML='<div class="modal">'
-    +'<div class="modal-hdr"><div class="modal-title">'+title+'</div>'
-    +'<button class="modal-close" onclick="closePrep()">&times;</button></div>'
-    +'<div class="modal-body">'+(formatted||'<p style="color:var(--mut);font-style:italic">No description on this event.</p>')+'</div>'
-    +'</div>';
-  back.addEventListener('click',function(e){if(e.target===back) closePrep();});
-  document.body.appendChild(back);
-  document.addEventListener('keydown',escClose);
-}
-function closePrep(){
-  var el=document.getElementById('prep-modal');
-  if(el) el.remove();
-  document.removeEventListener('keydown',escClose);
-}
-function escClose(e){if(e.key==='Escape') closePrep();}
-
-// ── data loading ──────────────────────────────────────────────────────────────
-function doLoad(tok){
-  S.loading=true; S.error=null; render();
-  Promise.all([fetchEvents(tok), fetchViewerEmail(tok)])
-    .then(function(res){
-      S.events=res[0]; S.viewerEmail=res[1]; S.lastLoaded=Date.now();
-      sessionStorage.setItem(CACHE_KEY,JSON.stringify({evs:res[0],email:res[1],date:new Date().toDateString()}));
-      S.loading=false; render();
-      kickEnrichment(tok, res[0]);
-    })
-    .catch(function(e){
-      if(e.message&&e.message.indexOf('401')>-1){
-        sessionStorage.removeItem(TOK_KEY); sessionStorage.removeItem(CACHE_KEY);
-        S.token=null; S.events=null; S.viewerEmail=null; S.loading=false; render(); return;
-      }
-      S.error=e.message; S.loading=false; render();
-    });
-}
-
-function kickEnrichment(tok, evs){
-  var queue=[];
-  evs.forEach(function(ev){
-    var ext=(ev.attendees||[]).filter(function(a){return !a.self&&!isInternal(a);});
-    if(!ext.length) return;
-    var att=ext[0], key=att.email;
-    if(S.enrichCache[key]||S.enriching[key]) return;
-    S.enriching[key]=true;
-    queue.push({ev:ev,att:att,key:key});
-  });
-  render();
-  // Stagger requests 1s apart to avoid rate limits
-  queue.forEach(function(item, i){
-    setTimeout(function(){
-      var ev=item.ev, att=item.att, key=item.key;
-
-    Promise.all([
-      fetchEmails(tok, att.email),
-      fetchPastMeetings(tok, att.email),
-      fetchContactPhoto(tok, att.email)
-    ]).then(function(res){
-      var emails=res[0], lastMet=res[1], photo=res[2], apollo=null;
-      if(photo) S.photoCache[att.email]=photo;
-      return enrichContact(att.displayName||att.email, att.email, ev.summary||'', ev.description||'', emails, lastMet, null)
-        .then(function(enr){
-          enr.lastMet=lastMet;
-          return enr;
-        });
-    }).then(function(enr){
-      // Use photo from web enrichment if no Google Contacts photo
-      if(enr.photo && !S.photoCache[key]) S.photoCache[key]=enr.photo;
-      S.enrichCache[key]=enr; delete S.enriching[key]; render();
-    }).catch(function(){
-      delete S.enriching[key]; render();
-    });
-    }, i * 1000); // stagger by 1s per contact
-  });
-}
-
-// ── OAuth ─────────────────────────────────────────────────────────────────────
-function handleSignIn(){
-  if(CLIENT_ID==='YOUR_GOOGLE_CLIENT_ID_HERE'){alert('Add your Google OAuth Client ID first.');return;}
-  function go(){
-    var client=google.accounts.oauth2.initTokenClient({
-      client_id:CLIENT_ID, scope:SCOPES,
-      callback:function(resp){
-        if(resp.error){S.error='Sign-in failed. Please try again.';render();return;}
-        S.token=resp.access_token;
-        sessionStorage.setItem(TOK_KEY,resp.access_token);
-        doLoad(resp.access_token);
-      }
-    });
-    client.requestAccessToken();
-  }
-  if(window.google&&window.google.accounts&&window.google.accounts.oauth2){go();return;}
-  var s=document.createElement('script');
-  s.src='https://accounts.google.com/gsi/client';
-  s.onload=go;
-  s.onerror=function(){S.error='Failed to load Google sign-in. Check your connection.';render();};
-  document.head.appendChild(s);
-}
-
-// ── prep click handler (event delegation) ────────────────────────────────────
-document.addEventListener('click', function(e){
-  var btn = e.target.closest('.prep-open');
-  if(!btn) return;
-  var id = btn.getAttribute('data-id');
-  if(id && S.prepStore && S.prepStore[id]){
-    openPrep(id);
-  }
-});
-
-// ── init ──────────────────────────────────────────────────────────────────────
-try {
-  var cached=sessionStorage.getItem(CACHE_KEY);
-  if(cached){
-    var c=JSON.parse(cached);
-    if(c.date===new Date().toDateString()){
-      S.events=c.evs; S.viewerEmail=c.email||null; S.lastLoaded=Date.now();
-    }
-  }
-} catch(e){}
-
-if(S.token&&!S.events) doLoad(S.token);
-else render();
-
-setInterval(function(){
-  if(S.token){
-    try {
-      var c=sessionStorage.getItem(CACHE_KEY);
-      if(!c||JSON.parse(c).date!==new Date().toDateString()) doLoad(S.token);
-    } catch(e){}
-  }
-}, 5*60*1000);
 </script>
 </body>
 </html>
