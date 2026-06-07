@@ -340,7 +340,7 @@ Weather: {weather_str}
 Data:
 {json.dumps(trimmed, indent=2)}
 
-Return a single JSON object matching the shape of one element in the "days" array from the schema — not a full {"days": [...]} wrapper, just the day object itself."""
+Return a single JSON object matching the shape of one element in the "days" array from the schema — not a full {{"days": [...]}} wrapper, just the day object itself."""
 
     payload = {
         "model": "claude-haiku-4-5-20251001",
