@@ -259,10 +259,10 @@ def fetch_weather() -> dict:
 
 # ── Claude for intelligence ───────────────────────────────────────────────────
 
-SYSTEM_PROMPT = """You are a briefing assistant for Omar Yaqub, Executive Director of IslamicFamily (Edmonton nonprofit, Muslim/newcomer communities). For each external meeting attendee, use web search to find: their role, a direct photo URL (jpg/png), LinkedIn URL, and write 2-3 sentences on who they are and why relevant to Omar's work (halal housing, social finance, nonprofit, community development). Summarise any email snippets into 1-2 sentences of meeting context.
+SYSTEM_PROMPT = """You are a briefing assistant for Omar Yaqub, Executive Director of IslamicFamily (Edmonton nonprofit, Muslim/newcomer communities). You will receive calendar and email data. For each external attendee, use the name and email domain to infer their role/org, write 2-3 sentences on who they likely are and why relevant to Omar's work (halal housing, social finance, nonprofit, community development). Use email snippets for meeting context. Set photo_url and linkedin_url to null.
 
 Return ONLY valid JSON (no markdown), one day object:
-{"date":"2026-06-08","label":"Monday, June 8","tab_label":"Mon Jun 8","summary":"One sentence.","stats":{"external":2,"internal":4,"in_person":1,"offsite":0,"offsite_detail":""},"weather":{"icon":"☀️","temp_c":18,"condition":"Sunny"},"meetings":[{"time":"9:00 AM","duration":"30 min","title":"Title","meet_link":"url or null","meet_platform":"Google Meet","meet_emoji":"📹","topic_tag":"Short tag","same_call_as":null,"people":[{"name":"Full Name","role":"Title · Org","initials":"FQ","photo_url":"url or null","linkedin_url":"url or null","who_they_are":"2-3 sentences.","email_context":"1-2 sentences or null"}]}]}"""
+{"date":"2026-06-08","label":"Monday, June 8","tab_label":"Mon Jun 8","summary":"One sentence.","stats":{"external":2,"internal":4,"in_person":1,"offsite":0,"offsite_detail":""},"weather":{"icon":"☀️","temp_c":18,"condition":"Sunny"},"meetings":[{"time":"9:00 AM","duration":"30 min","title":"Title","meet_link":"url or null","meet_platform":"Google Meet","meet_emoji":"📹","topic_tag":"Short tag","same_call_as":null,"people":[{"name":"Full Name","role":"Title · Org","initials":"FQ","photo_url":null,"linkedin_url":null,"who_they_are":"2-3 sentences.","email_context":"1-2 sentences or null"}]}]}"""
 
 
 def call_claude_day(day: dict, weather_str: str) -> dict:
@@ -305,10 +305,9 @@ def call_claude_day(day: dict, weather_str: str) -> dict:
 
     payload = {
         "model": "claude-haiku-4-5-20251001",
-        "max_tokens": 6000,
+        "max_tokens": 3000,
         "system": SYSTEM_PROMPT,
         "messages": [{"role": "user", "content": user_message}],
-        "tools": [{"type": "web_search_20250305", "name": "web_search"}],
     }
 
     headers = {
