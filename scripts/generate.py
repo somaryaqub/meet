@@ -317,38 +317,34 @@ Return ONLY valid JSON, no markdown fences, in this exact shape:
 }"""
 
 
-def call_claude(day_data: list, weather: dict) -> dict:
-    # Trim email snippets to keep prompt small
-    trimmed = []
-    for day in day_data:
-        day_copy = dict(day)
-        meetings_copy = []
-        for m in day.get("meetings", []):
-            m_copy = dict(m)
-            people_copy = []
-            for p in m.get("people", []):
-                p_copy = dict(p)
-                # Keep only first snippet, truncated
-                snippets = p_copy.get("email_snippets", [])
-                p_copy["email_snippets"] = [s[:200] for s in snippets[:1]]
-                people_copy.append(p_copy)
-            m_copy["people"] = people_copy
-            meetings_copy.append(m_copy)
-        day_copy["meetings"] = meetings_copy
-        trimmed.append(day_copy)
+def call_claude_day(day: dict, weather_str: str) -> dict:
+    """Call Claude for a single day to keep output well within token limits."""
+    trimmed = dict(day)
+    meetings_copy = []
+    for m in day.get("meetings", []):
+        m_copy = dict(m)
+        people_copy = []
+        for p in m.get("people", []):
+            p_copy = dict(p)
+            snippets = p_copy.get("email_snippets", [])
+            p_copy["email_snippets"] = [s[:200] for s in snippets[:1]]
+            people_copy.append(p_copy)
+        m_copy["people"] = people_copy
+        meetings_copy.append(m_copy)
+    trimmed["meetings"] = meetings_copy
 
-    user_message = f"""Here is the raw calendar and email data for two days. Research each external person and return the structured JSON.
+    user_message = f"""Research each external person in this single day's data and return the structured JSON for ONE day only.
 
-Weather:
-- Day 1: {weather['day0_icon']} {weather['day0_temp']}°C {weather['day0_cond']}
-- Day 2: {weather['day1_icon']} {weather['day1_temp']}°C {weather['day1_cond']}
+Weather: {weather_str}
 
 Data:
-{json.dumps(trimmed, indent=2)}"""
+{json.dumps(trimmed, indent=2)}
+
+Return a single JSON object matching the shape of one element in the "days" array from the schema — not a full {"days": [...]} wrapper, just the day object itself."""
 
     payload = {
         "model": "claude-haiku-4-5-20251001",
-        "max_tokens": 4000,
+        "max_tokens": 6000,
         "system": SYSTEM_PROMPT,
         "messages": [{"role": "user", "content": user_message}],
         "tools": [{"type": "web_search_20250305", "name": "web_search"}],
@@ -360,12 +356,9 @@ Data:
         "content-type": "application/json",
     }
 
-    print("Calling Claude API…")
     r = requests.post(
         "https://api.anthropic.com/v1/messages",
-        headers=headers,
-        json=payload,
-        timeout=180,
+        headers=headers, json=payload, timeout=180,
     )
     if not r.ok:
         print("API error:", r.text)
@@ -374,15 +367,25 @@ Data:
     data = r.json()
     text_blocks = [b["text"] for b in data.get("content", []) if b.get("type") == "text"]
     raw = "\n".join(text_blocks).strip()
-    print(f"  Claude response length: {len(raw)} chars")
-    print(f"  Stop reason: {data.get('stop_reason')}")
-    if len(raw) < 500:
-        print(f"  Raw response: {raw!r}")
+    print(f"  Response: {len(raw)} chars, stop_reason: {data.get('stop_reason')}")
+    if data.get("stop_reason") == "max_tokens":
+        raise ValueError("Hit max_tokens — response truncated, cannot parse JSON")
     if raw.startswith("```"):
-        raw = raw.split("\n", 1)[1].rsplit("```", 1)[0]
+        raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
     if not raw:
-        raise ValueError(f"Empty response from Claude. Stop reason: {data.get('stop_reason')}")
+        raise ValueError("Empty response from Claude")
     return json.loads(raw)
+
+
+def call_claude(day_data: list, weather: dict) -> dict:
+    w0 = f"{weather['day0_icon']} {weather['day0_temp']}°C {weather['day0_cond']}"
+    w1 = f"{weather['day1_icon']} {weather['day1_temp']}°C {weather['day1_cond']}"
+    days = []
+    for i, (day, wx) in enumerate(zip(day_data, [w0, w1])):
+        print(f"  Calling Claude for day {i+1} ({day['label']})…")
+        result = call_claude_day(day, wx)
+        days.append(result)
+    return {"days": days}
 
 # ── HTML rendering ────────────────────────────────────────────────────────────
 
