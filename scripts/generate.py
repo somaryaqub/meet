@@ -145,7 +145,7 @@ Fetch calendar events for both days from omary@islamicfamily.ca, find external a
 pull email context, research each person, and return the structured JSON."""
 
     payload = {
-        "model": "claude-sonnet-4-20250514",
+        "model": "claude-sonnet-4-6",
         "max_tokens": 4000,
         "system": SYSTEM_PROMPT,
         "messages": [{"role": "user", "content": user_message}],
