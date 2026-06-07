@@ -329,7 +329,7 @@ Calendar and email data:
 
     payload = {
         "model": "claude-sonnet-4-6",
-        "max_tokens": 4000,
+        "max_tokens": 8000,
         "system": SYSTEM_PROMPT,
         "messages": [{"role": "user", "content": user_message}],
         "tools": [{"type": "web_search_20250305", "name": "web_search"}],
@@ -355,8 +355,14 @@ Calendar and email data:
     data = r.json()
     text_blocks = [b["text"] for b in data.get("content", []) if b.get("type") == "text"]
     raw = "\n".join(text_blocks).strip()
+    print(f"  Claude response length: {len(raw)} chars")
+    print(f"  Stop reason: {data.get('stop_reason')}")
+    if len(raw) < 500:
+        print(f"  Raw response: {raw!r}")
     if raw.startswith("```"):
         raw = raw.split("\n", 1)[1].rsplit("```", 1)[0]
+    if not raw:
+        raise ValueError(f"Empty response from Claude. Stop reason: {data.get('stop_reason')}")
     return json.loads(raw)
 
 # ── HTML rendering ────────────────────────────────────────────────────────────
