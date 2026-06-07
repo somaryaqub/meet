@@ -179,6 +179,8 @@ pull email context, research each person, and return the structured JSON."""
         json=payload,
         timeout=120,
     )
+    if not resp.ok:
+        print("API error response:", resp.text)
     resp.raise_for_status()
     data = resp.json()
 
