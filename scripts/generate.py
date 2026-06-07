@@ -154,13 +154,19 @@ pull email context, research each person, and return the structured JSON."""
                 "type": "url",
                 "url": "https://calendarmcp.googleapis.com/mcp/v1",
                 "name": "google-calendar",
-                "authorization_token": access_token,
+                "authentication": {
+                    "type": "bearer",
+                    "token": access_token,
+                },
             },
             {
                 "type": "url",
                 "url": "https://gmailmcp.googleapis.com/mcp/v1",
                 "name": "gmail",
-                "authorization_token": access_token,
+                "authentication": {
+                    "type": "bearer",
+                    "token": access_token,
+                },
             },
         ],
         "tools": [{"type": "web_search_20250305", "name": "web_search"}],
