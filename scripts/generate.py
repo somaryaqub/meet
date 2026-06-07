@@ -154,24 +154,23 @@ pull email context, research each person, and return the structured JSON."""
                 "type": "url",
                 "url": "https://calendarmcp.googleapis.com/mcp/v1",
                 "name": "google-calendar",
-                "authentication": {
-                    "type": "bearer",
-                    "token": access_token,
-                },
+                "authorization_token": access_token,
             },
             {
                 "type": "url",
                 "url": "https://gmailmcp.googleapis.com/mcp/v1",
                 "name": "gmail",
-                "authentication": {
-                    "type": "bearer",
-                    "token": access_token,
-                },
+                "authorization_token": access_token,
             },
         ],
         "tools": [{"type": "web_search_20250305", "name": "web_search"}],
     }
 
+    print("Sending payload (redacted):", json.dumps({
+        **payload,
+        "system": payload["system"][:80] + "...",
+        "mcp_servers": [{**s, "authorization_token": "REDACTED"} for s in payload["mcp_servers"]],
+    }, indent=2)[:500])
     headers = {
         "x-api-key": ANTHROPIC_API_KEY,
         "anthropic-version": "2023-06-01",
