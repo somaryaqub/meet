@@ -318,18 +318,37 @@ Return ONLY valid JSON, no markdown fences, in this exact shape:
 
 
 def call_claude(day_data: list, weather: dict) -> dict:
-    user_message = f"""Here is the raw calendar and email data for the two days. Research each external person and return the structured JSON.
+    # Trim email snippets to keep prompt small
+    trimmed = []
+    for day in day_data:
+        day_copy = dict(day)
+        meetings_copy = []
+        for m in day.get("meetings", []):
+            m_copy = dict(m)
+            people_copy = []
+            for p in m.get("people", []):
+                p_copy = dict(p)
+                # Keep only first snippet, truncated
+                snippets = p_copy.get("email_snippets", [])
+                p_copy["email_snippets"] = [s[:200] for s in snippets[:1]]
+                people_copy.append(p_copy)
+            m_copy["people"] = people_copy
+            meetings_copy.append(m_copy)
+        day_copy["meetings"] = meetings_copy
+        trimmed.append(day_copy)
 
-Weather data:
+    user_message = f"""Here is the raw calendar and email data for two days. Research each external person and return the structured JSON.
+
+Weather:
 - Day 1: {weather['day0_icon']} {weather['day0_temp']}°C {weather['day0_cond']}
 - Day 2: {weather['day1_icon']} {weather['day1_temp']}°C {weather['day1_cond']}
 
-Calendar and email data:
-{json.dumps(day_data, indent=2)}"""
+Data:
+{json.dumps(trimmed, indent=2)}"""
 
     payload = {
-        "model": "claude-sonnet-4-6",
-        "max_tokens": 8000,
+        "model": "claude-haiku-4-5-20251001",
+        "max_tokens": 4000,
         "system": SYSTEM_PROMPT,
         "messages": [{"role": "user", "content": user_message}],
         "tools": [{"type": "web_search_20250305", "name": "web_search"}],
