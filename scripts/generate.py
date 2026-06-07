@@ -259,88 +259,49 @@ def fetch_weather() -> dict:
 
 # ── Claude for intelligence ───────────────────────────────────────────────────
 
-SYSTEM_PROMPT = """You are a personal briefing assistant for Omar Yaqub, Executive Director of IslamicFamily in Edmonton, Alberta (nonprofit serving newcomer, refugee, and Muslim communities for 35+ years).
+SYSTEM_PROMPT = """You are a briefing assistant for Omar Yaqub, Executive Director of IslamicFamily (Edmonton nonprofit, Muslim/newcomer communities). For each external meeting attendee, use web search to find: their role, a direct photo URL (jpg/png), LinkedIn URL, and write 2-3 sentences on who they are and why relevant to Omar's work (halal housing, social finance, nonprofit, community development). Summarise any email snippets into 1-2 sentences of meeting context.
 
-You will receive structured calendar and email data for two days. For each external meeting attendee, you must:
-1. Research who they are using web search — their role, organisation, background
-2. Find a public photo URL (university/org profile page, conference speaker page, LinkedIn photo — must be a direct image URL ending in jpg/png/webp)
-3. Find their LinkedIn URL
-4. Write 2-3 sentences on who they are and why this relationship matters to Omar's work (IslamicFamily, halal housing, social finance, nonprofit sector, community development)
-5. Summarise any email context provided into 1-2 sentences about this specific meeting
-
-Return ONLY valid JSON, no markdown fences, in this exact shape:
-
-{
-  "days": [
-    {
-      "date": "2026-06-08",
-      "label": "Monday, June 8",
-      "tab_label": "Mon Jun 8",
-      "summary": "One sentence describing the external meetings for this day.",
-      "stats": {
-        "external": 2,
-        "internal": 4,
-        "in_person": 1,
-        "offsite": 0,
-        "offsite_detail": ""
-      },
-      "weather": {
-        "icon": "☀️",
-        "temp_c": 18,
-        "condition": "Sunny"
-      },
-      "meetings": [
-        {
-          "time": "9:00 AM",
-          "duration": "30 min",
-          "title": "Calendar title",
-          "meet_link": "https://... or null",
-          "meet_platform": "Google Meet",
-          "meet_emoji": "📹",
-          "topic_tag": "Short topic label",
-          "same_call_as": null,
-          "people": [
-            {
-              "name": "Full Name",
-              "role": "Title · Organisation",
-              "initials": "FQ",
-              "photo_url": "https://direct-image-url.jpg or null",
-              "linkedin_url": "https://linkedin.com/in/... or null",
-              "who_they_are": "2-3 sentences.",
-              "email_context": "1-2 sentence summary or null"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}"""
+Return ONLY valid JSON (no markdown), one day object:
+{"date":"2026-06-08","label":"Monday, June 8","tab_label":"Mon Jun 8","summary":"One sentence.","stats":{"external":2,"internal":4,"in_person":1,"offsite":0,"offsite_detail":""},"weather":{"icon":"☀️","temp_c":18,"condition":"Sunny"},"meetings":[{"time":"9:00 AM","duration":"30 min","title":"Title","meet_link":"url or null","meet_platform":"Google Meet","meet_emoji":"📹","topic_tag":"Short tag","same_call_as":null,"people":[{"name":"Full Name","role":"Title · Org","initials":"FQ","photo_url":"url or null","linkedin_url":"url or null","who_they_are":"2-3 sentences.","email_context":"1-2 sentences or null"}]}]}"""
 
 
 def call_claude_day(day: dict, weather_str: str) -> dict:
     """Call Claude for a single day to keep output well within token limits."""
-    trimmed = dict(day)
-    meetings_copy = []
+    # Send only what Claude needs — strip everything else
+    trimmed_meetings = []
     for m in day.get("meetings", []):
-        m_copy = dict(m)
-        people_copy = []
+        trimmed_people = []
         for p in m.get("people", []):
-            p_copy = dict(p)
-            snippets = p_copy.get("email_snippets", [])
-            p_copy["email_snippets"] = [s[:200] for s in snippets[:1]]
-            people_copy.append(p_copy)
-        m_copy["people"] = people_copy
-        meetings_copy.append(m_copy)
-    trimmed["meetings"] = meetings_copy
+            snippets = p.get("email_snippets", [])
+            trimmed_people.append({
+                "name":  p.get("name",""),
+                "email": p.get("email",""),
+                "email_snippet": snippets[0][:150] if snippets else None,
+            })
+        trimmed_meetings.append({
+            "time":     m.get("time",""),
+            "duration": m.get("duration",""),
+            "title":    m.get("title",""),
+            "meet_link":     m.get("meet_link",""),
+            "meet_platform": m.get("meet_platform",""),
+            "meet_emoji":    m.get("meet_emoji","📹"),
+            "people":   trimmed_people,
+        })
 
-    user_message = f"""Research each external person in this single day's data and return the structured JSON for ONE day only.
+    trimmed = {
+        "date":          day["date"],
+        "label":         day["label"],
+        "internal":      day["internal"],
+        "in_person":     day["in_person"],
+        "offsite":       day["offsite"],
+        "offsite_detail":day["offsite_detail"],
+        "meetings":      trimmed_meetings,
+    }
 
-Weather: {weather_str}
-
-Data:
-{json.dumps(trimmed, indent=2)}
-
-Return a single JSON object matching the shape of one element in the "days" array from the schema — not a full {{"days": [...]}} wrapper, just the day object itself."""
+    user_message = (
+        f"Weather: {weather_str}\n\n"
+        f"Data:\n{json.dumps(trimmed)}"
+    )
 
     payload = {
         "model": "claude-haiku-4-5-20251001",
